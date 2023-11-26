@@ -11,11 +11,11 @@ var light_up_color
 @onready var tile_map = get_tree().get_root().get_node("Board").mytilemap
 var resolve_code
 var card_color : Vector3
+var priority
 
 var CardDatabase = preload("res://Game/Cards/CardDatabase.gd")
 var CardData_Dict = CardDatabase.ALLCARDS
 signal Card_is_clicked(clickedcard : Card, triggerplayer : Player)
-signal Card_resolved(resolved_card : Card)
 
 
 func _ready():
@@ -70,7 +70,9 @@ func light_up_in_range():
 	var lightupcolor : Color = light_up_color
 	var card_owner_figure = get_parent().owner_figure
 	tile_map.light_up_pentas(get_tiles_in_range(card_owner_figure),lightupcolor)
-
+	
+func get_card_speed(figure : Figure) -> int:
+	return card_stats_dict["CARD_PRIORITY"] + figure.get_speed()
 	
 func _process(delta):
 	if hover or selected:
@@ -82,8 +84,6 @@ func _process(delta):
 		self.z_index = 42 - ingame_pos*3 
 		self.scale = Vector2(hoverscale,hoverscale)
 		
-func check_if_movement_is_possible(figure : Figure) -> bool:
-	return figure.decision_target in get_tiles_in_range(figure)
 		
 func _on_button_pressed():
 	Card_is_clicked.emit(self,get_parent())

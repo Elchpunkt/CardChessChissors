@@ -13,7 +13,7 @@ var maprotation : float = deg_to_rad(20)
 var lit_pentagons : Array[pentagon]
 
 
-func get_tiles_in_range(source: pentagon, card_range : int, ghost : bool = false) -> Array[pentagon]:
+func get_tiles_in_range(source: pentagon, card_range : int, ghost : bool = true) -> Array[pentagon]:
 	var possible_tiles : Array[pentagon] = [source]
 	var next_possible_tiles : Array[pentagon] = []
 	for r in range(0,card_range):
@@ -26,7 +26,7 @@ func get_tiles_in_range(source: pentagon, card_range : int, ghost : bool = false
 		possible_tiles.append_array(next_possible_tiles)
 	return possible_tiles
 
-func get_tiles_in_direction(source : pentagon, card_range : int, direction : int,ghost : bool = false) -> Array[pentagon]:
+func get_tiles_in_direction(source : pentagon, card_range : int, direction : int,ghost : bool = true) -> Array[pentagon]:
 	var possible_tiles : Array[pentagon] = [source]
 	var next_possible_tiles : Array[pentagon] = []
 	for r in range(0,card_range):
@@ -38,13 +38,13 @@ func get_tiles_in_direction(source : pentagon, card_range : int, direction : int
 		possible_tiles.append_array(next_possible_tiles)
 	return possible_tiles
 
-func get_tiles_in_all_directions(source : pentagon, card_range : int,ghost : bool = false) -> Array[pentagon]:
+func get_tiles_in_all_directions(source : pentagon, card_range : int,ghost : bool = true) -> Array[pentagon]:
 	var possible_tiles : Array[pentagon] = [source]
 	for d in range(0,5):
 			possible_tiles.append_array(get_tiles_in_direction(source, card_range,d,ghost))
 	return possible_tiles
 	
-func get_diagonal_tiles_in_range(source : pentagon, card_range : int,ghost : bool = false) -> Array[pentagon]:
+func get_diagonal_tiles_in_range(source : pentagon, card_range : int,ghost : bool = true) -> Array[pentagon]:
 	var possible_tiles : Array[pentagon] = [source]
 	var next_possible_tiles : Array[pentagon] = []
 	for r in range(0,card_range):

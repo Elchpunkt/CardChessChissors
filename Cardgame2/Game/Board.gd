@@ -20,7 +20,6 @@ var oneshot = 1
 var selected_figure
 var selected_card
 var game_state = "Place Figure"
-var to_resolve_cards : Array[Card]
 
 var penta_is_clicked_func = func penta_is_clicked(clicked_penta : Area2D):
 	
@@ -29,11 +28,13 @@ var penta_is_clicked_func = func penta_is_clicked(clicked_penta : Area2D):
 			if oneshot == 1:
 				var newfigure : Figure = gen_figure("MUTANT",playerlist[0])
 				newfigure.place_figure_on_tile(clicked_penta)
+				newfigure.connect("update_figure_interface",updatefigureinterface)
 				oneshot = 2
 				selected_figure = newfigure
 			elif oneshot == 2:
 				var newfigure : Figure = gen_figure("MUTANT",playerlist[1])
 				newfigure.place_figure_on_tile(clicked_penta)
+				newfigure.connect("update_figure_interface",updatefigureinterface)
 				oneshot = 3
 				game_state = "Choose Aktion"
 		"Choose Aktion":
@@ -79,8 +80,6 @@ var undocardselect = func undo_card_selected():
 		selected_card = null
 		mytilemap.light_off_pentas()
 		
-var cardresolved = func card_resolved(resolved_card : Card):
-	to_resolve_cards.pop_at(to_resolve_cards.find(resolved_card))
 
 func resolve_turn():
 	var allready : int = 0
@@ -94,7 +93,6 @@ func resolve_turn():
 			if figure.figure_owner.is_player == false:
 				figure.figure_owner.npc_random_action(figure)
 				figure.figure_owner.npc_random_direction(figure,figure.decision)
-			to_resolve_cards.append(figure.decision)
 		game_state = "Resolve Turn"
 		for i in range(1,6):
 			resolve_priority(i)
@@ -108,7 +106,13 @@ func resolve_turn():
 func resolve_priority(priority : int):
 	for figure in figurelist:
 		figure.decision.resolve_card(figure,figure.decision_target,priority)
-	
+		
+var updatefigureinterface = func update_figure_interface(figure : Figure):
+	print("something takes dmg")
+	if figure.figure_owner.is_player == true:
+		$CanvasLayer1/GameControls/Figure_Stats_Loc/PFigureHealth.set_text("Pfigure Life = " + str(figure.life))
+	else:
+		$CanvasLayer1/GameControls/Figure_Stats_Loc/OFigureHealth.set_text("Ofigure Life = " + str(figure.life))
 func gen_figure(figure_type : String, figureowner : Player) -> Figure:
 	var newfigure = Figures.instantiate()
 	newfigure.set_figure_owner(figureowner)
@@ -146,26 +150,21 @@ func load_deck(ownerFigure : Figure, ownerPlayer : Player):
 	for i in range(0,5):
 		var newcard = deckobj.load_card_for_stack(i,5,grid[i])
 		newcard.connect("Card_is_clicked",cardselected)
-		newcard.connect("Card_resolved",cardresolved)
 		
 	for i in range(5,9):
 		var newcard = deckobj.load_card_for_stack(i,4,grid[i])
 		newcard.connect("Card_is_clicked",cardselected)
-		newcard.connect("Card_resolved",cardresolved)
 		
 	for i in range(9,12):
 		var newcard = deckobj.load_card_for_stack(i,3,grid[i])
 		newcard.connect("Card_is_clicked",cardselected)
-		newcard.connect("Card_resolved",cardresolved)
 		
 	for i in range(12,14):
 		var newcard = deckobj.load_card_for_stack(i,2,grid[i])
 		newcard.connect("Card_is_clicked",cardselected)
-		newcard.connect("Card_resolved",cardresolved)
 		
 	var newcard = deckobj.load_card_for_stack(14,1,grid[14])
 	newcard.connect("Card_is_clicked",cardselected)
-	newcard.connect("Card_resolved",cardresolved)
 func _ready():
 	#Standart deck generator
 	var stndrtdck = Decks.instantiate()

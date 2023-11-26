@@ -3,8 +3,9 @@ extends Node
 var card_stats_dict_sub : Dictionary
 
 func resolve_this_card(acting_figure : Figure, choice : pentagon, priority : int):
-	if priority == 1 and get_parent().check_if_movement_is_possible(acting_figure):
-		acting_figure.move_figure(acting_figure.map_position,choice)
+	if priority == card_stats_dict_sub["CARD_PRIORITY"] + acting_figure.get_speed():
+		if not choice.blocked:
+			acting_figure.move_figure(acting_figure.map_position,choice)
 	
 
 func get_tiles_in_range_sub(acting_figure : Figure, tile_map) -> Array[pentagon]:

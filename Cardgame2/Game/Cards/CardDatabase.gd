@@ -14,7 +14,8 @@ const ALLCARDS = {
 			"CARD_COLOR" : "RED",
 			"CARD_SUPER_TYPE" : "ATTACK",
 			"CARD_RANGE" : 1,
-			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_SLICE.gd"
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_SLICE.gd",
+			"CARD_PRIORITY" : 2
 		},
 	"MUTATE":
 		{
@@ -25,7 +26,8 @@ const ALLCARDS = {
 			"CARD_COLOR" : "GREEN",
 			"CARD_SUPER_TYPE" : "BUFF",
 			"CARD_RANGE" : 0,
-			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_MUTATE.gd"
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_MUTATE.gd",
+			"CARD_PRIORITY" : 3
 		},
 	"DASH":
 		{
@@ -36,7 +38,8 @@ const ALLCARDS = {
 			"CARD_COLOR" : "GREEN",
 			"CARD_SUPER_TYPE" : "MOVE",
 			"CARD_RANGE" : 2,
-			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_DASH.gd"
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_DASH.gd",
+			"CARD_PRIORITY" : 1
 		},
 	"TELEPORT":
 		{
@@ -47,7 +50,8 @@ const ALLCARDS = {
 			"CARD_COLOR" : "BLUE",
 			"CARD_SUPER_TYPE" : "MOVE",
 			"CARD_RANGE" : 4,
-			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_TELEPORT.gd"
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_TELEPORT.gd",
+			"CARD_PRIORITY" : 3
 		},
 	"LEAP":
 		{
@@ -58,6 +62,7 @@ const ALLCARDS = {
 			"CARD_COLOR" : "GREEN",
 			"CARD_SUPER_TYPE" : "MOVE",
 			"CARD_RANGE" : 2,
-			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_LEAP.gd"
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_LEAP.gd",
+			"CARD_PRIORITY" : 1
 		}
 }

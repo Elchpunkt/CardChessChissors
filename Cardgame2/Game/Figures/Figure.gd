@@ -77,8 +77,16 @@ func remove_figure_from_tile(standing_tile : pentagon, fromgame : bool = false):
 		
 func take_damage(damage : int):
 	life -= damage
-	update_figure_interface.emit()
+	update_figure_interface.emit(self)
+	if life <= 0:
+		print("Game Over")
+		await get_tree().create_timer(5.0).timeout
+		get_tree().quit()
+
 		
+		
+func get_speed() -> int:
+	return 0
 	
 func _ready():
 	pass
