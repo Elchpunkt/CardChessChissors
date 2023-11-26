@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmdrfij7dtnka"]
+
+[ext_resource type="Script" path="res://Game/Cards/Card.gd" id="1_2spop"]
+[ext_resource type="Texture2D" uid="uid://6xg1txlpau8t" path="res://Game/Cards/CardImg/CardFront/a1069040220_10.jpg" id="2_bv7sf"]
+[ext_resource type="Texture2D" uid="uid://c15jai2j2sw6y" path="res://Game/Cards/CardImg/Sleves/CardOverlay.png" id="3_aelig"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3c7u7"]
+
+[node name="Card" type="MarginContainer"]
+clip_children = 1
+z_as_relative = false
+offset_right = 125.0
+offset_bottom = 150.0
+pivot_offset = Vector2(100, 125)
+mouse_filter = 2
+script = ExtResource("1_2spop")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+clip_children = 1
+layout_mode = 2
+
+[node name="CardArt" type="Sprite2D" parent="ColorRect"]
+position = Vector2(-3.8147e-06, 7.62939e-06)
+scale = Vector2(0.135281, 0.125)
+texture = ExtResource("2_bv7sf")
+centered = false
+
+[node name="CardOverlay" type="Sprite2D" parent="ColorRect/CardArt"]
+position = Vector2(462, 600)
+scale = Vector2(3.696, 4)
+texture = ExtResource("3_aelig")
+
+[node name="Noise" type="Sprite2D" parent="ColorRect/CardArt"]
+visible = false
+texture = SubResource("NoiseTexture2D_3c7u7")
+centered = false
+
+[node name="Cardname" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.164706, 0.164706, 0.164706, 1)
+
+[node name="Button" type="Button" parent="."]
+visibility_layer = 0
+layout_mode = 2
+mouse_default_cursor_shape = 3
+
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[connection signal="mouse_entered" from="Button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Button" to="." method="_on_button_mouse_exited"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

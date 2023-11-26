@@ -1,0 +1,107 @@
+[gd_scene load_steps=14 format=3 uid="uid://b5vqnuwfq08g2"]
+
+[ext_resource type="Script" path="res://Game/Cards/Board.gd" id="1_c2p55"]
+[ext_resource type="Texture2D" uid="uid://bjommwwxv5cn8" path="res://Backgrounds/e4fd3fbedcbf588f.jpeg" id="2_yy57h"]
+[ext_resource type="Script" path="res://Game/Cards/Background.gd" id="3_dxlv8"]
+[ext_resource type="Script" path="res://Game/Cards/FightGrid.gd" id="5_fry4c"]
+[ext_resource type="Texture2D" uid="uid://cskfwe8hpjumn" path="res://Game/Cards/CardImg/Sleves/3ade428a30393797.jpeg" id="5_kkupw"]
+[ext_resource type="Texture2D" uid="uid://ml2hxjhhs3fk" path="res://Game/Cards/CardImg/Sleves/5ff7e8f0aeac9f63.jpeg" id="6_5vurm"]
+[ext_resource type="Texture2D" uid="uid://didndli547bte" path="res://Game/Cards/CardImg/Sleves/061cff9fc288a51c.jpeg" id="7_ed6t3"]
+[ext_resource type="Texture2D" uid="uid://br6rxy1oij1au" path="res://Game/Cards/CardImg/Sleves/85e023b82fe79faa.jpeg" id="8_aietp"]
+[ext_resource type="Texture2D" uid="uid://c5w60aesxt20i" path="res://Game/Cards/CardImg/Sleves/9e55b7a2b58ca909.jpeg" id="9_cqpy3"]
+[ext_resource type="Texture2D" uid="uid://da8oro75d53ra" path="res://Game/Cards/CardImg/Sleves/30327f4258f19695.jpeg" id="10_tkjhf"]
+[ext_resource type="Shader" path="res://Game/Cards/Board.gdshader" id="12_rmydp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_60mwu"]
+shader = ExtResource("12_rmydp")
+shader_parameter/mask_softness = 1.4
+shader_parameter/mask_threshold = 0.6
+shader_parameter/sort = 0.854
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0mdo0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_kkupw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_5vurm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ed6t3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_aietp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_cqpy3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_tkjhf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Board" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_c2p55")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = 2
+follow_viewport_enabled = true
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer2"]
+material = SubResource("ShaderMaterial_60mwu")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CanvasLayer1" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="GameControls" type="Control" parent="CanvasLayer1"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="CanvasLayer0" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="Map" type="Sprite2D" parent="CanvasLayer0"]
+z_index = -2
+z_as_relative = false
+scale = Vector2(0.5, 0.5)
+centered = false
+script = ExtResource("5_fry4c")
+
+[node name="TileMap" type="TileMap" parent="CanvasLayer0/Map"]
+format = 2
+
+[node name="CanvasLayer-1" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" type="Sprite2D" parent="CanvasLayer-1"]
+modulate = Color(0.215686, 0.215686, 0.215686, 1)
+texture = ExtResource("2_yy57h")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1920, 1080)
+script = ExtResource("3_dxlv8")
+
+[node name="Visuals" type="AnimatedSprite2D" parent="CanvasLayer-1/Background"]
+visible = false
+position = Vector2(456, 267)
+scale = Vector2(0.830452, 0.330473)
+sprite_frames = SubResource("SpriteFrames_0mdo0")

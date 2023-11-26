@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmdrfij7dtnka"]
+
+[ext_resource type="Script" path="res://Game/Cards/Card.gd" id="1_3nhq2"]
+[ext_resource type="Texture2D" uid="uid://c15jai2j2sw6y" path="res://Game/Cards/CardImg/Sleves/CardOverlay.png" id="2_plabq"]
+[ext_resource type="Texture2D" uid="uid://cskfwe8hpjumn" path="res://Game/Cards/CardImg/Sleves/3ade428a30393797.jpeg" id="3_w3crr"]
+[ext_resource type="Texture2D" uid="uid://bf7owqnper778" path="res://Game/Cards/CardImg/Sleves/ColorINDICATOR1.png" id="4_ryfei"]
+
+[node name="Card" type="MarginContainer"]
+clip_children = 1
+offset_right = 125.0
+offset_bottom = 150.0
+pivot_offset = Vector2(62.5, 75)
+script = ExtResource("1_3nhq2")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+clip_children = 1
+layout_mode = 2
+
+[node name="Overlay" type="Sprite2D" parent="ColorRect"]
+clip_children = 2
+position = Vector2(62.5, 75)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_plabq")
+
+[node name="CardArt" type="Sprite2D" parent="ColorRect"]
+z_index = -1
+scale = Vector2(0.139509, 0.117188)
+texture = ExtResource("3_w3crr")
+centered = false
+
+[node name="ColorIndicator" type="Sprite2D" parent="ColorRect"]
+position = Vector2(62.5, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_ryfei")
+
+[node name="Cardname" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Button" type="Button" parent="."]
+z_index = -2
+layout_mode = 2
+
+[connection signal="mouse_entered" from="Button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Button" to="." method="_on_button_mouse_exited"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
