@@ -37,7 +37,7 @@ func load_card_for_stack(i : int,stapel : int,grid_position : Vector2) -> Card:
 func move_card(thiscard : Card):
 	var beforepos = thiscard.ingame_pos
 	var grid : Array[Vector2] = []
-	if self.get_parent().is_player:
+	if self.get_parent().playerid == 1:
 		grid = get_tree().get_root().get_node("Board").grid_positionsP
 	else:
 		grid = get_tree().get_root().get_node("Board").grid_positionsO

@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4rfs7jsn1idb"]
+
+[ext_resource type="Texture2D" uid="uid://bypqy7xaolt5d" path="res://Game/Figures/FiguresImg/e7728d898c41453e.jpeg" id="1_1d2jf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7xcrb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1d2jf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D"]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+clip_children = 1
+position = Vector2(3, 7)
+polygon = PackedVector2Array(-24, -17, -18, -27, -18, -36, -33, -35, -33, -49, -20, -61, -20, -82, -10, -90, 3, -90, 8, -78, 7, -64, 12, -44, 17, -30, 10, -23, 8, -12, 8, -8, -11, 0, -20, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Polygon2D"]
+position = Vector2(-8, -31)
+scale = Vector2(0.12, 0.12)
+sprite_frames = SubResource("SpriteFrames_7xcrb")

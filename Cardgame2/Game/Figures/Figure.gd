@@ -9,6 +9,7 @@ var figure_deck : Deck
 var animationstate : String = "Alive"
 var decision : Card
 var decision_target : pentagon
+var next_position : pentagon
 var map_position : pentagon
 var life : int = 45
 var resource : Dictionary = {}
@@ -40,6 +41,7 @@ func set_decision_target(target_tile):
 func create_ghost(target_tile):
 	remove_ghost()
 	var figure_scene_instance = figure_scene.instantiate()
+	figure_scene_instance.modulate = Color(1,1,1,0.8)
 	get_parent().get_parent().add_child(figure_scene_instance)
 	figure_scene_instance.position = (target_tile.midpos * tile_map.mapscaling).rotated(tile_map.maprotation) + target_tile.global_position
 	figure_ghost = figure_scene_instance
@@ -63,7 +65,11 @@ func lightoff():
 	
 func move_figure(from_tile : pentagon, to_tile : pentagon):
 	self.remove_figure_from_tile(from_tile)
-	self.place_figure_on_tile(to_tile)
+	next_position = to_tile
+	
+func update_figure_position():
+	if next_position:
+		place_figure_on_tile(next_position)
 	
 func place_figure_on_tile(Mappos : pentagon):
 	Mappos.add_obj_to_this_tile("FIGURE", self)

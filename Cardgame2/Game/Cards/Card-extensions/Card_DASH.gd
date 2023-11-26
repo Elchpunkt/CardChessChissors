@@ -4,7 +4,7 @@ var card_stats_dict_sub : Dictionary
 
 func resolve_this_card(acting_figure : Figure, choice : pentagon, priority : int):
 	if priority == get_parent().get_card_speed(acting_figure):
-		if not choice.blocked:
+		if get_parent().check_movement_possible(choice, priority):
 			acting_figure.move_figure(acting_figure.map_position,choice)
 
 func get_tiles_in_range_sub(acting_figure : Figure, tile_map, ghost : bool = true) -> Array[pentagon]:

@@ -6,7 +6,7 @@ const ALLFIGURES = {
 	"CYBORG" :
 		["Cyborg","res://Game/Figures/FigureScenes/BasicFigure.tscn","StandartDeck"],
 	"MUTANT" :
-		["Mutant","res://Game/Figures/FigureScenes/BasicFigure.tscn","StandartDeck"],
+		["Mutant","res://Game/Figures/FigureScenes/Mutant.tscn","StandartDeck"],
 	"SOLDIER" :
 		["Soldier","res://Game/Figures/FigureScenes/BasicFigure.tscn","StandartDeck"]
 }

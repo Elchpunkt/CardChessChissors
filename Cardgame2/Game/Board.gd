@@ -30,21 +30,22 @@ var penta_is_clicked_func = func penta_is_clicked(clicked_penta : Area2D):
 				newfigure.place_figure_on_tile(clicked_penta)
 				newfigure.connect("update_figure_interface",updatefigureinterface)
 				oneshot = 2
-				selected_figure = newfigure
 			elif oneshot == 2:
-				var newfigure : Figure = gen_figure("MUTANT",playerlist[1])
+				var newfigure : Figure = gen_figure("SOLDIER",playerlist[1])
 				newfigure.place_figure_on_tile(clicked_penta)
 				newfigure.connect("update_figure_interface",updatefigureinterface)
 				oneshot = 3
+				game_state = "Choose Figure"
+		"Choose Figure":
+			if clicked_penta.objs_on_this_tile.has("FIGURE"):
+				#if selected_figure.figure_owner.is_player:
+				#selected_figure = null
+				selected_figure = clicked_penta.objs_on_this_tile.FIGURE
+				selected_figure.lightup()
 				game_state = "Choose Aktion"
 		"Choose Aktion":
-			if clicked_penta.objs_on_this_tile.has("FIGURE"):
-				if selected_figure:
-					selected_figure.lightoff()
-					if selected_figure.figure_owner.is_player:
-						selected_figure = null
-						selected_figure = clicked_penta.objs_on_this_tile.FIGURE
-					selected_figure.lightup()
+			pass
+
 		"Choose Target":
 			var possible_tiles = selected_figure.decision.get_tiles_in_range(selected_figure)
 			if clicked_penta in possible_tiles:
@@ -76,18 +77,24 @@ var undocardselect = func undo_card_selected():
 	if game_state == "Choose Target":
 		game_state == "Choose Aktion"
 		selected_figure.decision = null
-		selected_card.selected = false
-		selected_card = null
+		if selected_card:
+			selected_card.selected = false
+			selected_card = null
 		mytilemap.light_off_pentas()
-		
+	if game_state == "Choose Aktion":
+		selected_figure.lightoff()
+		selected_figure = null
+		game_state = "Choose Figure"
 
 func resolve_turn():
 	var allready : int = 0
 	for figure in figurelist:
 		if figure.figure_owner.is_player == true:
-			allready + 1
+			allready += 1
 			if figure.decision and figure.decision_target:
-				allready - 1
+				allready -= 1
+			else:
+				print("waiting for second choice")
 	if allready == 0:
 		for figure in figurelist:
 			if figure.figure_owner.is_player == false:
@@ -100,16 +107,22 @@ func resolve_turn():
 			figure.figure_deck.move_card(figure.decision)
 			figure.decision.selected = false
 			figure.decision = null
-		game_state= "Choose Aktion"
-		mytilemap.light_off_pentas()
+	selected_figure.lightoff()
+	selected_figure = null
+	selected_card.selected = false
+	selected_card = null
+	game_state= "Choose Figure"
+	mytilemap.light_off_pentas()
 		
 func resolve_priority(priority : int):
 	for figure in figurelist:
 		figure.decision.resolve_card(figure,figure.decision_target,priority)
+	for figure in figurelist:
+		figure.update_figure_position()
 		
 var updatefigureinterface = func update_figure_interface(figure : Figure):
 	print("something takes dmg")
-	if figure.figure_owner.is_player == true:
+	if figure.figure_owner.playerid == 1:
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/PFigureHealth.set_text("Pfigure Life = " + str(figure.life))
 	else:
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/OFigureHealth.set_text("Ofigure Life = " + str(figure.life))
@@ -142,7 +155,7 @@ func load_deck(ownerFigure : Figure, ownerPlayer : Player):
 	ownerPlayer.add_child(deckobj)
 	ownerFigure.figure_deck = deckobj
 	var grid
-	if ownerPlayer.is_player:
+	if ownerPlayer.playerid == 1:
 		grid = grid_positionsP
 	else:
 		grid = grid_positionsO
@@ -179,7 +192,7 @@ func _ready():
 	player1.set_is_player(true)
 	var player2 = Players.instantiate()
 	player2.set_playerid(2)
-	player2.set_is_player(false)
+	player2.set_is_player(true)
 	$CanvasLayer1/GameControls.add_child(player1)
 	$CanvasLayer1/GameControls.add_child(player2)
 	playerlist.append(player1)
