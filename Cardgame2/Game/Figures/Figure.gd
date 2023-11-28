@@ -12,9 +12,12 @@ var decision_target : pentagon
 var next_position : pentagon
 var map_position : pentagon
 var life : int = 45
+var speed : int
 var resource : Dictionary = {}
+var conditions : Dictionary = {}
 var figure_scene
 var figure_ghost
+
 
 @onready var tile_map = get_tree().get_root().get_node("Board").mytilemap
 
@@ -93,7 +96,12 @@ func take_damage(damage : int):
 		
 		
 func get_speed() -> int:
-	return 0
+	speed = 2
+	for condition in conditions.values():
+		if condition.has_method("modify_speed"):
+			speed += condition.modify_speed
+	speed = clamp(speed,1,4)
+	return speed
 	
 func _ready():
 	pass

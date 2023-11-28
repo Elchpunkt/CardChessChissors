@@ -53,6 +53,7 @@ func move_card(thiscard : Card):
 		14:
 			self.push_card_in_stack(1,grid)
 	update_color_stats()
+	owner_figure.update_figure_interface.emit(owner_figure)
 
 func push_card_in_stack(stapel : int, grid : Array[Vector2]):
 	var thisstack = self.get("stack_with_"+str(stapel))
@@ -63,6 +64,7 @@ func push_card_in_stack(stapel : int, grid : Array[Vector2]):
 		var cf = (i+stapel-1)%stapel + summ
 		thisstack[i].update_card_position(cf,grid[cf])
 	thisstack.append(thisstack.pop_front())
+	
 
 func update_color_stats():
 	color_stats = Vector3(0,0,0)

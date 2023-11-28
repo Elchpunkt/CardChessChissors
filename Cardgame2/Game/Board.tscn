@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://c5w60aesxt20i" path="res://Game/Cards/CardImg/Sleves/9e55b7a2b58ca909.jpeg" id="10_bkto2"]
 [ext_resource type="Texture2D" uid="uid://da8oro75d53ra" path="res://Game/Cards/CardImg/Sleves/30327f4258f19695.jpeg" id="11_dkmyy"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_60mwu"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u425y"]
 shader = ExtResource("2_tlv7i")
 shader_parameter/mask_softness = 1.4
 shader_parameter/mask_threshold = 0.6
@@ -60,13 +60,14 @@ layer = 2
 follow_viewport_enabled = true
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer2"]
-material = SubResource("ShaderMaterial_60mwu")
+material = SubResource("ShaderMaterial_u425y")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [node name="CanvasLayer1" type="CanvasLayer" parent="."]
 
@@ -101,6 +102,12 @@ layout_direction = 3
 layout_mode = 2
 text = "FIGURE2 HP:"
 horizontal_alignment = 2
+
+[node name="PColorStats" type="Label" parent="CanvasLayer1/GameControls/Figure_Stats_Loc"]
+layout_mode = 2
+
+[node name="OColorStats" type="Label" parent="CanvasLayer1/GameControls/Figure_Stats_Loc"]
+layout_mode = 2
 
 [node name="CanvasLayer0" type="CanvasLayer" parent="."]
 layer = 0

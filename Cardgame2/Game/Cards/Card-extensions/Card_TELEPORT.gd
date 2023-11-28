@@ -6,7 +6,8 @@ func resolve_this_card(acting_figure : Figure, choice : pentagon, priority : int
 	if priority == get_parent().get_card_speed(acting_figure):
 		if get_parent().check_movement_possible(choice, priority):	
 			acting_figure.move_figure(acting_figure.map_position,choice)
-	
+		acting_figure.remove_ghost()
+		
 func play_animation(acting_figure : Figure, choice : pentagon):
 	pass	
 

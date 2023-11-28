@@ -44,7 +44,13 @@ var penta_is_clicked_func = func penta_is_clicked(clicked_penta : Area2D):
 				selected_figure.lightup()
 				game_state = "Choose Aktion"
 		"Choose Aktion":
-			pass
+			if clicked_penta.objs_on_this_tile.has("FIGURE"):
+				#if selected_figure.figure_owner.is_player:
+				selected_figure.lightoff()
+				selected_figure = null
+				selected_figure = clicked_penta.objs_on_this_tile.FIGURE
+				selected_figure.lightup()
+				game_state = "Choose Aktion"
 
 		"Choose Target":
 			var possible_tiles = selected_figure.decision.get_tiles_in_range(selected_figure)
@@ -75,16 +81,21 @@ var cardselected = func card_is_selected(thiscard : Card, thisdeck : Deck):
 				
 var undocardselect = func undo_card_selected():
 	if game_state == "Choose Target":
-		game_state == "Choose Aktion"
+		game_state = "Choose Aktion"
 		selected_figure.decision = null
 		if selected_card:
 			selected_card.selected = false
 			selected_card = null
 		mytilemap.light_off_pentas()
-	if game_state == "Choose Aktion":
+	elif game_state == "Choose Aktion":
+		game_state = "Choose Figure"
 		selected_figure.lightoff()
 		selected_figure = null
-		game_state = "Choose Figure"
+
+		
+var selectnextfigure = func selcet_next_figure():
+	var next_figure = figurelist[(figurelist.find(selected_figure) + 1)%len(figurelist)]
+	next_figure.map_position.penta_being_clicked.emit(next_figure.map_position)
 
 func resolve_turn():
 	var allready : int = 0
@@ -101,7 +112,7 @@ func resolve_turn():
 				figure.figure_owner.npc_random_action(figure)
 				figure.figure_owner.npc_random_direction(figure,figure.decision)
 		game_state = "Resolve Turn"
-		for i in range(1,6):
+		for i in range(1,12):
 			resolve_priority(i)
 		for figure in figurelist:
 			figure.figure_deck.move_card(figure.decision)
@@ -121,11 +132,15 @@ func resolve_priority(priority : int):
 		figure.update_figure_position()
 		
 var updatefigureinterface = func update_figure_interface(figure : Figure):
-	print("something takes dmg")
 	if figure.figure_owner.playerid == 1:
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/PFigureHealth.set_text("Pfigure Life = " + str(figure.life))
+		$CanvasLayer1/GameControls/Figure_Stats_Loc/PColorStats.set_text("RED = " + str(figure.figure_deck.color_stats.x)
+		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.x))
 	else:
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/OFigureHealth.set_text("Ofigure Life = " + str(figure.life))
+		$CanvasLayer1/GameControls/Figure_Stats_Loc/OColorStats.set_text("RED = " + str(figure.figure_deck.color_stats.x)
+		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.x))
+	
 func gen_figure(figure_type : String, figureowner : Player) -> Figure:
 	var newfigure = Figures.instantiate()
 	newfigure.set_figure_owner(figureowner)
@@ -178,6 +193,7 @@ func load_deck(ownerFigure : Figure, ownerPlayer : Player):
 		
 	var newcard = deckobj.load_card_for_stack(14,1,grid[14])
 	newcard.connect("Card_is_clicked",cardselected)
+	
 func _ready():
 	#Standart deck generator
 	var stndrtdck = Decks.instantiate()
@@ -217,6 +233,10 @@ func _input(event):
 			cardselected.call(selected_figure.figure_deck.stack_with_5[0],selected_figure.figure_deck)
 		elif event.is_action_pressed("UnchooseCard"):
 			undocardselect.call()
+	if game_state == "Choose Figure" or game_state == "Choose Aktion":
+		if event.is_action_pressed("TabtoSelect"):
+			selectnextfigure.call()
+			
 		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -226,4 +246,4 @@ func _process(delta):
 	if selected_figure:
 		$Camera2D.set_position(selected_figure.get_global_position()- screensize/2.0)
 	else:
-		$Camera2D.set_position(mousepos/screensize*300)
+		$Camera2D.set_position(mousepos/screensize*150)
