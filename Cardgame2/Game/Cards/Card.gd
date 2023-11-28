@@ -63,26 +63,32 @@ func resolve_card(acting_figure : Figure, target_penta : pentagon, priority : in
 func get_tiles_in_range(acting_figure : Figure) -> Array[pentagon]:
 	return resolve_code.get_tiles_in_range_sub(acting_figure,tile_map)
 	
-func check_movement_possible(target : pentagon, priority : int, check_opponent : bool = false) -> bool:
-	var is_possible : bool = true
+func check_movement_possible(target : pentagon, priority : int, blocking_figures : Array[Figure] = []) -> bool:
+	var is_possible : bool
 	if not target.blocked:
+		is_possible = true
 		for figure in get_tree().get_root().get_node("Board").figurelist:
-			if not figure == self:
+			if figure != get_parent().owner_figure:
 				if figure.decision_target == target:
 					if figure.decision.card_stats_dict["CARD_SUPER_TYPE"] == "MOVE":
-						if figure.decision.priority == priority:
+						if figure.decision.get_card_speed(figure) == priority:
 							is_possible = false
-							print("2 figures want to move there")
+							print("2 figures want to move there",get_parent().owner_figure,figure)
 	elif target.blocked:	
+		is_possible = false
 		if target.objs_on_this_tile["FIGURE"]:
 			var figure = target.objs_on_this_tile["FIGURE"] 
 			if figure.decision.card_stats_dict["CARD_SUPER_TYPE"] == "MOVE":
-				if !check_opponent:
-					return true
-				if figure.decision_target != target and figure.decision.check_movement_possible(figure.decision_target,priority,true):
-					if figure.decision.priority != priority:
-						is_possible = false
-						print("target does not move away")
+				if figure.decision.priority == priority:
+					if figure.decision_target != target:
+						if blocking_figures.has(get_parent().owner_figure):
+								is_possible = true
+								print("switch places")
+						else:
+							blocking_figures.append(get_parent().owner_figure)
+							if figure.decision.check_movement_possible(figure.decision_target,priority,blocking_figures):
+								is_possible = true
+								print("target moves away")
 	return is_possible
 func get_possible_targets():
 	pass

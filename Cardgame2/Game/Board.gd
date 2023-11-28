@@ -204,20 +204,26 @@ func _ready():
 # All Keyboard inputs HERE
 	
 func _input(event):
-	if event.is_action_pressed("Cardslot1"):
-		cardselected.call(selected_figure.figure_deck.stack_with_1[0],selected_figure.figure_deck)
-	elif event.is_action_pressed("Cardslot2"):
-		cardselected.call(selected_figure.figure_deck.stack_with_2[0],selected_figure.figure_deck)
-	elif event.is_action_pressed("Cardslot3"):
-		cardselected.call(selected_figure.figure_deck.stack_with_3[0],selected_figure.figure_deck)
-	elif event.is_action_pressed("Cardslot4"):
-		cardselected.call(selected_figure.figure_deck.stack_with_4[0],selected_figure.figure_deck)
-	elif event.is_action_pressed("Cardslot5"):
-		cardselected.call(selected_figure.figure_deck.stack_with_5[0],selected_figure.figure_deck)
-	elif event.is_action_pressed("UnchooseCard"):
-		undocardselect.call()
+	if game_state == "Choose Aktion" or game_state == "Choose Target":
+		if event.is_action_pressed("Cardslot1"):
+			cardselected.call(selected_figure.figure_deck.stack_with_1[0],selected_figure.figure_deck)
+		elif event.is_action_pressed("Cardslot2"):
+			cardselected.call(selected_figure.figure_deck.stack_with_2[0],selected_figure.figure_deck)
+		elif event.is_action_pressed("Cardslot3"):
+			cardselected.call(selected_figure.figure_deck.stack_with_3[0],selected_figure.figure_deck)
+		elif event.is_action_pressed("Cardslot4"):
+			cardselected.call(selected_figure.figure_deck.stack_with_4[0],selected_figure.figure_deck)
+		elif event.is_action_pressed("Cardslot5"):
+			cardselected.call(selected_figure.figure_deck.stack_with_5[0],selected_figure.figure_deck)
+		elif event.is_action_pressed("UnchooseCard"):
+			undocardselect.call()
 		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	var screensize = Vector2(get_viewport().size)
+	var mousepos = get_local_mouse_position() - screensize/2.0
+	if selected_figure:
+		$Camera2D.set_position(selected_figure.get_global_position()- screensize/2.0)
+	else:
+		$Camera2D.set_position(mousepos/screensize*300)

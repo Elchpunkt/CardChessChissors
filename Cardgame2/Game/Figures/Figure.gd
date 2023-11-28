@@ -70,6 +70,7 @@ func move_figure(from_tile : pentagon, to_tile : pentagon):
 func update_figure_position():
 	if next_position:
 		place_figure_on_tile(next_position)
+		next_position = null
 	
 func place_figure_on_tile(Mappos : pentagon):
 	Mappos.add_obj_to_this_tile("FIGURE", self)

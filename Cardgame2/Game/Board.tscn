@@ -53,6 +53,7 @@ script = ExtResource("1_t8jgb")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
+position_smoothing_enabled = true
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
 layer = 2
@@ -68,7 +69,6 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="CanvasLayer1" type="CanvasLayer" parent="."]
-follow_viewport_enabled = true
 
 [node name="GameControls" type="Control" parent="CanvasLayer1"]
 layout_mode = 3
@@ -104,6 +104,7 @@ horizontal_alignment = 2
 
 [node name="CanvasLayer0" type="CanvasLayer" parent="."]
 layer = 0
+follow_viewport_enabled = true
 
 [node name="Map" type="Sprite2D" parent="CanvasLayer0"]
 z_index = -2
