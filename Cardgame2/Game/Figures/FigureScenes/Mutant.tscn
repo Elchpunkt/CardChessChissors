@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b4rfs7jsn1idb"]
 
 [ext_resource type="Texture2D" uid="uid://bypqy7xaolt5d" path="res://Game/Figures/FiguresImg/e7728d898c41453e.jpeg" id="1_1d2jf"]
-[ext_resource type="Texture2D" uid="uid://csm5xhphws4a4" path="res://Backgrounds/Noises/Noise3.png" id="2_t1g5h"]
+[ext_resource type="Texture2D" uid="uid://ranf3urvd5ta" path="res://Backgrounds/Noises/Light1.png" id="2_lnyvy"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7xcrb"]
 animations = [{
@@ -28,5 +28,5 @@ sprite_frames = SubResource("SpriteFrames_7xcrb")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 shadow_enabled = true
-texture = ExtResource("2_t1g5h")
+texture = ExtResource("2_lnyvy")
 height = 10.0

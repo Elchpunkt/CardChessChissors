@@ -29,6 +29,7 @@ func load_card(thiscardname : String , startpos : int):
 	sprite = load(card_stats_dict["CARDTEXTURE"])
 	resolve_code = load(str(card_stats_dict["CARD_CODE"])).new()
 	resolve_code.card_stats_dict_sub = card_stats_dict
+	print(resolve_code.choice_popup)
 	add_child(resolve_code)
 	$ColorRect/CardArt.set_texture(sprite)
 	load_color()

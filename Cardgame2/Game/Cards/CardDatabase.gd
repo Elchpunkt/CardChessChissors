@@ -53,6 +53,18 @@ const ALLCARDS = {
 			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_TELEPORT.gd",
 			"CARD_PRIORITY" : 3
 		},
+	"OVERCHARGE":
+		{
+			"CARDNAME": "OVERCHARGE",
+			"CARDTEXTURE":"res://Game/Cards/CardImg/CardFront/2d38411678e3a6b8.jpeg",
+			"ALLOWED_ROWS" : 12345,
+			"ALLOWED_COLUMS" : 12345,
+			"CARD_COLOR" : "RED",
+			"CARD_SUPER_TYPE" : "BUFF",
+			"CARD_RANGE" : 0,
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_OVERCHARGE.gd",
+			"CARD_PRIORITY" : 3
+		},
 	"LEAP":
 		{
 			"CARDNAME": "LEAP",

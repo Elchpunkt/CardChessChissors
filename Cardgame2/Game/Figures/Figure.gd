@@ -13,7 +13,7 @@ var next_position : pentagon
 var map_position : pentagon
 var life : int = 45
 var speed : int
-var resource : Dictionary = {}
+var resource : Dictionary = {"RED" = 0,"GREEN" = 0, "BLUE" = 0}
 var conditions : Dictionary = {}
 var figure_scene
 var figure_ghost

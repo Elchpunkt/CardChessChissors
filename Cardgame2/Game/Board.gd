@@ -68,7 +68,7 @@ var cardselected = func card_is_selected(thiscard : Card, thisdeck : Deck):
 	print("Card is clicked ->",thiscard.cardname)
 	if game_state == "Choose Aktion" or game_state == 	"Choose Target":
 		print(game_state)
-		if selected_figure:
+		if selected_figure == thisdeck.owner_figure:
 			if thiscard.ingame_pos in [0,5,9,12,14]:
 				if selected_figure.decision:
 					selected_figure.decision.selected = false
