@@ -65,6 +65,18 @@ const ALLCARDS = {
 			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_OVERCHARGE.gd",
 			"CARD_PRIORITY" : 3
 		},
+	"BARRICADE":
+		{
+			"CARDNAME": "BARRICADE",
+			"CARDTEXTURE":"res://Game/Cards/CardImg/CardFront/2d38411678e3a6b8.jpeg",
+			"ALLOWED_ROWS" : 12345,
+			"ALLOWED_COLUMS" : 12345,
+			"CARD_COLOR" : "BLUE",
+			"CARD_SUPER_TYPE" : "SUMMON",
+			"CARD_RANGE" : 1,
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_BARRICADE.gd",
+			"CARD_PRIORITY" : 3
+		},
 	"LEAP":
 		{
 			"CARDNAME": "LEAP",

@@ -1,13 +1,15 @@
 extends Node
 
 
+
 var duration : int = 3
 var turns_left : int
 var parent_figure : Figure
 
+
 func create(figure : Figure):
+	add_to_group("BUFFS")
 	parent_figure = figure
-	figure.conditions["SPEED DEMON"] = self
 	turns_left = duration
 	figure.add_child(self)
 	

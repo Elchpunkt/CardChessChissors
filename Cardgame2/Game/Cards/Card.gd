@@ -27,9 +27,9 @@ func load_card(thiscardname : String , startpos : int):
 	$Cardname.text = cardname + "  " + str(ingame_pos)
 	card_stats_dict = CardData_Dict[thiscardname]
 	sprite = load(card_stats_dict["CARDTEXTURE"])
+	print(str(card_stats_dict["CARD_CODE"]))
 	resolve_code = load(str(card_stats_dict["CARD_CODE"])).new()
 	resolve_code.card_stats_dict_sub = card_stats_dict
-	print(resolve_code.choice_popup)
 	add_child(resolve_code)
 	$ColorRect/CardArt.set_texture(sprite)
 	load_color()
@@ -43,6 +43,8 @@ func load_color():
 			light_up_color = Color(0,0,0.8,0.3)
 		"BUFF":
 			light_up_color = Color(0.2,0.5,0.2,0.3)
+		"SUMMON":
+			light_up_color = Color(0.3,0.3,0.3,0.3)
 			
 func load_card_color():
 	match card_stats_dict["CARD_COLOR"]:

@@ -118,6 +118,7 @@ func resolve_turn():
 			figure.figure_deck.move_card(figure.decision)
 			figure.decision.selected = false
 			figure.decision = null
+		get_tree().call_group("BUFFS","turn_passed")
 	selected_figure.lightoff()
 	selected_figure = null
 	selected_card.selected = false
@@ -136,11 +137,12 @@ var updatefigureinterface = func update_figure_interface(figure : Figure):
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/PFigureHealth.set_text("Pfigure Life = " + str(figure.life))
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/PColorStats.set_text("RED = " + str(figure.figure_deck.color_stats.x)
 		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.x))
+		$CanvasLayer1/GameControls/Figure_Stats_Loc/PResources.set_text(str(figure.resource))
 	else:
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/OFigureHealth.set_text("Ofigure Life = " + str(figure.life))
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/OColorStats.set_text("RED = " + str(figure.figure_deck.color_stats.x)
 		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.x))
-	
+		$CanvasLayer1/GameControls/Figure_Stats_Loc/OResources.set_text(str(figure.resource))	
 func gen_figure(figure_type : String, figureowner : Player) -> Figure:
 	var newfigure = Figures.instantiate()
 	newfigure.set_figure_owner(figureowner)

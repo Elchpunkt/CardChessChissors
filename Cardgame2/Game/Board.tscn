@@ -109,6 +109,12 @@ layout_mode = 2
 [node name="OColorStats" type="Label" parent="CanvasLayer1/GameControls/Figure_Stats_Loc"]
 layout_mode = 2
 
+[node name="PResources" type="Label" parent="CanvasLayer1/GameControls/Figure_Stats_Loc"]
+layout_mode = 2
+
+[node name="OResources" type="Label" parent="CanvasLayer1/GameControls/Figure_Stats_Loc"]
+layout_mode = 2
+
 [node name="CanvasLayer0" type="CanvasLayer" parent="."]
 layer = 0
 follow_viewport_enabled = true
