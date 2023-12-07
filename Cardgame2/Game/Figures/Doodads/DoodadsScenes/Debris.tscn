@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://bv7piff7syror"]
+
+[ext_resource type="Texture2D" uid="uid://cpollk44bimdk" path="res://Game/Figures/Doodads/DoodadsImg/ddb4243b0a58e9ba.jpeg" id="1_7d423"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fitou"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_7d423")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Debris" type="CollisionPolygon2D"]
+polygon = PackedVector2Array(-179, -79, -181, -81, -208, -580, -90, -585, 49, -544, 194, -554, 254, -534, 280, 5, 30, 78, -182, -80)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+clip_children = 1
+z_as_relative = false
+position = Vector2(-39, -526)
+polygon = PackedVector2Array(-146, 443, -164, 172, -168, -55, -54, -61, 92, -18, 229, -27, 295, -9, 294, -2, 290, 10, 321, 531, 67, 607, -25, 540, -56, 543, -88, 519, -102, 492, -125, 464)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Polygon2D"]
+z_as_relative = false
+sprite_frames = SubResource("SpriteFrames_fitou")

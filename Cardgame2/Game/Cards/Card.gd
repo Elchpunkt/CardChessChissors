@@ -27,7 +27,6 @@ func load_card(thiscardname : String , startpos : int):
 	$Cardname.text = cardname + "  " + str(ingame_pos)
 	card_stats_dict = CardData_Dict[thiscardname]
 	sprite = load(card_stats_dict["CARDTEXTURE"])
-	print(str(card_stats_dict["CARD_CODE"]))
 	resolve_code = load(str(card_stats_dict["CARD_CODE"])).new()
 	resolve_code.card_stats_dict_sub = card_stats_dict
 	add_child(resolve_code)
@@ -61,7 +60,7 @@ func update_card_position(grid_position_index : int, grid_position :Vector2):
 		self.ingame_pos = grid_position_index
 		
 func resolve_card(acting_figure : Figure, target_penta : pentagon, priority : int):
-		resolve_code.resolve_this_card(acting_figure,target_penta,priority)
+		await resolve_code.resolve_this_card(acting_figure,target_penta,priority)
 
 func get_tiles_in_range(acting_figure : Figure) -> Array[pentagon]:
 	return resolve_code.get_tiles_in_range_sub(acting_figure,tile_map)
@@ -79,7 +78,7 @@ func check_movement_possible(target : pentagon, priority : int, blocking_figures
 							print("2 figures want to move there",get_parent().owner_figure,figure)
 	elif target.blocked:	
 		is_possible = false
-		if target.objs_on_this_tile["FIGURE"]:
+		if target.objs_on_this_tile.has("FIGURE"):
 			var figure = target.objs_on_this_tile["FIGURE"] 
 			if figure.decision.card_stats_dict["CARD_SUPER_TYPE"] == "MOVE":
 				if figure.decision.priority == priority:

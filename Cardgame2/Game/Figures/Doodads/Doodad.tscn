@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cman3h1bijpjx"]
+
+[ext_resource type="Script" path="res://Game/Figures/Doodads/Doodad.gd" id="1_g344j"]
+
+[node name="Doodad" type="Node2D"]
+top_level = true
+script = ExtResource("1_g344j")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

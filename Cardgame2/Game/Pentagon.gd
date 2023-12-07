@@ -39,19 +39,26 @@ func get_pindex() -> int:
 func get_midpos() -> Vector2:
 	return midpos
 	
+#func get_global_middle() -> Vector2:
+#	return self.global_position + get_midpos()
+
 	
 func add_obj_to_this_tile(objtype : String, something):
-	objs_on_this_tile[objtype] = something
 	if objtype == "FIGURE":
 		blocked = true
-	
+		objs_on_this_tile[objtype] = something
+	if objtype == "DOODAD":
+		objs_on_this_tile[objtype].append(something)
+		
 func get_obj_on_this_tile():
 	return objs_on_this_tile
 	
-func remove_obj_from_this_tile(objtype : String):
-	objs_on_this_tile.erase(objtype)
+func remove_obj_from_this_tile(objtype : String, what : Node = null):
 	if objtype == "FIGURE":
 		blocked = false
+		objs_on_this_tile.erase(objtype)
+	if objtype == "DOODAD":
+		objs_on_this_tile[objtype].pop_at(objs_on_this_tile[objtype].find(what))
 
 func createPenta(inpolygon : PackedVector2Array, inposition : Vector2, typein : String, index : int):
 	neighbours.resize(7)

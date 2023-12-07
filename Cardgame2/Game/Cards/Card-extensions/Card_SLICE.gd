@@ -13,6 +13,7 @@ func resolve_this_card(acting_figure : Figure, choice : pentagon, priority : int
 				var slice_popup = choice_popup.instantiate()
 				get_tree().get_root().get_node("Board/CanvasLayer1").add_child(slice_popup)
 				slice_popup.set_up_plus_minus(reds,"RED")
+				slice_popup.set_choice_name(acting_figure.figure_type + " Slice add RED")
 				var spendresources = await slice_popup.Choice_is_made
 				print(spendresources)
 				bonus_damage = spendresources*5

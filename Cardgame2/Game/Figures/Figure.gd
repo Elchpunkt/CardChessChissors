@@ -11,6 +11,7 @@ var decision : Card
 var decision_target : pentagon
 var next_position : pentagon
 var map_position : pentagon
+var is_controllable
 var life : int = 45
 var speed : int
 var resource : Dictionary = {"RED" = 0,"GREEN" = 0, "BLUE" = 0}
@@ -21,10 +22,11 @@ var figure_ghost
 @onready var tile_map = get_tree().get_root().get_node("Board").mytilemap
 
 signal update_figure_interface(figure : Figure)
+signal figure_is_clicked(clicked_figure : Figure)
 
 var FigureDatas = preload("res://Game/Figures/FigureDatabase.gd")
 
-signal figure_is_clicked(clicked_figure : Figure)
+
 
 func load_figure_bytype(type : String):
 	figure_type = type
@@ -32,8 +34,9 @@ func load_figure_bytype(type : String):
 	display_name = loaded_array[0]
 	figure_scene = load(loaded_array[1])
 	var figure_scene_instance = figure_scene.instantiate()
-	self.add_child(figure_scene_instance)
+	$Area2D.add_child(figure_scene_instance)
 	figure_deck_name = loaded_array[2]
+	is_controllable = loaded_array[3]
 	
 func set_decision_target(target_tile):
 	decision_target = target_tile
@@ -80,7 +83,7 @@ func place_figure_on_tile(Mappos : pentagon):
 	self.position = (Mappos.midpos * tile_map.mapscaling).rotated(tile_map.maprotation) + Mappos.global_position
 
 func remove_figure_from_tile(standing_tile : pentagon, fromgame : bool = false):
-	standing_tile.remove_obj_from_this_tile("FIGURE")
+	standing_tile.remove_obj_from_this_tile("FIGURE",self)
 	if fromgame:
 		self.queue_free()
 		
@@ -116,13 +119,7 @@ func _ready():
 	pass
 
 
-func _on_area_2d_mouse_entered():
-	pass # Replace with function body.
-
-
-func _on_area_2d_mouse_exited():
-	pass # Replace with function body.
-
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
-	pass # Replace with function body.
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		figure_is_clicked.emit(self)

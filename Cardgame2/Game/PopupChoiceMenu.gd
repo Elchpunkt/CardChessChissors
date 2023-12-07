@@ -7,6 +7,9 @@ var resource_type : String
 
 signal Choice_is_made(choice)
 
+func set_choice_name(thisname : String):
+	$Choice_name.text = thisname
+
 func set_up_choice_popup(possiblities : int):
 	var children : Array[Node] = get_node("GridContainer").get_children()
 	for child in children:
@@ -38,7 +41,7 @@ func _on_button_pressed():
 
 func _on_button_1_pressed():
 	if plus_minus:
-		choice = (choice - 1)%(available_resources+1)
+		choice = clamp((choice - 1),0,available_resources)
 		update_value()
 	if aktivate:
 		choice = 1
@@ -47,7 +50,7 @@ func _on_button_1_pressed():
 
 func _on_button_2_pressed():
 	if plus_minus:
-		choice = (choice + 1)%(available_resources+1)
+		choice = clamp((choice + 1),0,available_resources)
 		update_value()
 
 func _on_button_3_pressed():

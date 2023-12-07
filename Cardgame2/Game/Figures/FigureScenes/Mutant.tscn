@@ -15,6 +15,7 @@ animations = [{
 }]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D"]
+polygon = PackedVector2Array(-27, -38, -28, -36, -27, -33, -18, -33, -13, -43, -12, -15, -19, -7, -12, 6, -8, 6, -7, -14, -5, -35, 1, -30, 5, -32, 3, -11, 7, -11, 8, -24, 11, -35, 9, -48, 7, -57, 8, -63, 7, -66, 4, -80, -9, -80, -10, -71, -15, -63, -13, -56, -16, -48, -25, -38)
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 clip_children = 1

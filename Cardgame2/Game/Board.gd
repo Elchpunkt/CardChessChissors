@@ -28,12 +28,12 @@ var penta_is_clicked_func = func penta_is_clicked(clicked_penta : Area2D):
 			if oneshot == 1:
 				var newfigure : Figure = gen_figure("MUTANT",playerlist[0])
 				newfigure.place_figure_on_tile(clicked_penta)
-				newfigure.connect("update_figure_interface",updatefigureinterface)
+				self.listen_to_figure(newfigure)
 				oneshot = 2
 			elif oneshot == 2:
 				var newfigure : Figure = gen_figure("SOLDIER",playerlist[1])
 				newfigure.place_figure_on_tile(clicked_penta)
-				newfigure.connect("update_figure_interface",updatefigureinterface)
+				self.listen_to_figure(newfigure)
 				oneshot = 3
 				game_state = "Choose Figure"
 		"Choose Figure":
@@ -63,6 +63,17 @@ var penta_is_clicked_func = func penta_is_clicked(clicked_penta : Area2D):
 			pass
 		"Resolve Turn":
 			pass
+			
+var figureisclicked = func figure_is_clicked(figure : Figure):
+	match game_state:
+		"Choose Figure":
+				selected_figure = figure
+				selected_figure.lightup()
+				game_state = "Choose Aktion"
+				
+var doodadisclicked = func doodad_is_clicked(doodad : Doodad):
+	doodad.modulate = Color(0.5,0.5,0.5,1)
+			
 
 var cardselected = func card_is_selected(thiscard : Card, thisdeck : Deck):
 	print("Card is clicked ->",thiscard.cardname)
@@ -113,7 +124,7 @@ func resolve_turn():
 				figure.figure_owner.npc_random_direction(figure,figure.decision)
 		game_state = "Resolve Turn"
 		for i in range(1,12):
-			resolve_priority(i)
+			await resolve_priority(i)
 		for figure in figurelist:
 			figure.figure_deck.move_card(figure.decision)
 			figure.decision.selected = false
@@ -128,7 +139,8 @@ func resolve_turn():
 		
 func resolve_priority(priority : int):
 	for figure in figurelist:
-		figure.decision.resolve_card(figure,figure.decision_target,priority)
+		await figure.decision.resolve_card(figure,figure.decision_target,priority)
+		
 	for figure in figurelist:
 		figure.update_figure_position()
 		
@@ -136,13 +148,14 @@ var updatefigureinterface = func update_figure_interface(figure : Figure):
 	if figure.figure_owner.playerid == 1:
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/PFigureHealth.set_text("Pfigure Life = " + str(figure.life))
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/PColorStats.set_text("RED = " + str(figure.figure_deck.color_stats.x)
-		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.x))
+		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.z))
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/PResources.set_text(str(figure.resource))
 	else:
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/OFigureHealth.set_text("Ofigure Life = " + str(figure.life))
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/OColorStats.set_text("RED = " + str(figure.figure_deck.color_stats.x)
-		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.x))
+		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.z))
 		$CanvasLayer1/GameControls/Figure_Stats_Loc/OResources.set_text(str(figure.resource))	
+		
 func gen_figure(figure_type : String, figureowner : Player) -> Figure:
 	var newfigure = Figures.instantiate()
 	newfigure.set_figure_owner(figureowner)
@@ -164,6 +177,15 @@ func listen_to_map(thismap):
 	var pentalist = thismap.get_pentagonList()
 	for cpenta in pentalist:
 		cpenta.connect("penta_being_clicked",penta_is_clicked_func)
+		
+func listen_to_figure(figure : Figure):
+	figure.connect("figure_is_clicked",figureisclicked)
+	if figure.is_controllable:
+		figure.connect("update_figure_interface",updatefigureinterface)
+	
+		
+func listen_to_doodad(doodad : Doodad):
+	doodad.connect("doodad_is_clicked",doodadisclicked)
 	
 func load_deck(ownerFigure : Figure, ownerPlayer : Player):
 	var deckobj = Decks.instantiate()

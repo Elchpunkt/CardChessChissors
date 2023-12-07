@@ -33,6 +33,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_fn7i0")
 
+[node name="Choice_name" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "Choise name"
+
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.152941)
 scale = Vector2(1.17191, 0.430169)

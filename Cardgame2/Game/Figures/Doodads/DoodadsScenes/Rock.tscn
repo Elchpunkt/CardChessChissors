@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://di7hra2yvku57"]
+
+[ext_resource type="Texture2D" uid="uid://do4r2ajfppe1k" path="res://Game/Figures/Doodads/DoodadsImg/7b5d76b4a57d5a3f.jpeg" id="1_ca5fg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fitou"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ca5fg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Barricade" type="CollisionPolygon2D"]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+clip_children = 1
+position = Vector2(-70, -331)
+polygon = PackedVector2Array(-285, 198, -226, 43, -145, -31, -118, -71, -69, -118, -26, -177, -1, -273, 16, -251, 80, -451, 111, -436, 156, -434, 166, -410, 158, -353, 183, -317, 209, -294, 224, -213, 243, -167, 253, -120, 270, -16, 300, 66, 330, 128, 368, 211, 408, 312, 442, 386, 450, 422, 177, 403, 90, 422, -73, 370, -198, 365, -319, 314, -302, 264)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Polygon2D"]
+sprite_frames = SubResource("SpriteFrames_fitou")

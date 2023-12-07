@@ -22,5 +22,4 @@ func turn_passed():
 		remove_self()
 			
 func remove_self():
-	parent_figure.conditions.erase("SPEED DEMON")
 	self.queue_free()
