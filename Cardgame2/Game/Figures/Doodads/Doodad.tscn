@@ -4,6 +4,7 @@
 
 [node name="Doodad" type="Node2D"]
 top_level = true
+z_index = 1
 script = ExtResource("1_g344j")
 
 [node name="Area2D" type="Area2D" parent="."]

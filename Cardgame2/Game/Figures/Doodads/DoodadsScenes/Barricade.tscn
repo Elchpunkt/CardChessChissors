@@ -14,6 +14,7 @@ animations = [{
 }]
 
 [node name="Barricade" type="CollisionPolygon2D"]
+position = Vector2(0, 11)
 polygon = PackedVector2Array(-17, 8, -18, -3, -43, -5, -45, -12, -37, -13, -28, -27, -20, -27, -19, -132, 1, -140, 22, -135, 25, -75, 25, -26, 29, -27, 44, -16, 46, -8, 39, -5, 18, -2, 18, 7)
 
 [node name="Polygon2D" type="Polygon2D" parent="."]

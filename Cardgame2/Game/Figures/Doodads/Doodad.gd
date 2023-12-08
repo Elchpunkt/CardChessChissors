@@ -28,6 +28,7 @@ func place_doodad_on_tile(Mappos : pentagon):
 	Mappos.blocked = true
 	self.map_position = Mappos
 	self.position = (Mappos.midpos * tile_map.mapscaling).rotated(tile_map.maprotation) + Mappos.global_position
+	self.z_index = self.position.y
 
 func remove_doodad_from_tile(standing_tile : pentagon, fromgame : bool = false):
 	standing_tile.remove_obj_from_this_tile("DOODAD",self)

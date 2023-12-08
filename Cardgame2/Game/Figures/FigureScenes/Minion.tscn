@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://cinbrawcs2u47"]
+
+[ext_resource type="Texture2D" uid="uid://wp65217ceiii" path="res://Game/Figures/FiguresImg/308e3be29c2b0188.jpeg" id="1_fkm16"]
+[ext_resource type="Script" path="res://Game/Figures/FigureScenes/MinionKI.gd" id="1_wo5x8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7xcrb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fkm16")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D"]
+position = Vector2(0.5, 0.349999)
+scale = Vector2(0.96875, 0.959375)
+polygon = PackedVector2Array(-142.968, -174.436, -140.903, -210.919, -95.4839, -268.248, -35.6129, -298.476, -12.9032, -307.857, 41.8065, -295.349, 104.774, -263.036, 145.032, -201.537, 155.355, -142.124, 137.806, -77.4984, 87.2258, -35.8046, -0.516129, -6.61889, -57.2903, -22.2541, -122.323, -76.456, -148.129, -130.658)
+script = ExtResource("1_wo5x8")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+clip_children = 1
+position = Vector2(3, 7)
+polygon = PackedVector2Array(-156.29, -136.616, -145.968, -216.876, -98.4839, -273.163, -51, -297.137, -38.6129, -305.476, -45.8387, -334.661, -32.4194, -309.645, -28.2903, -310.687, -24.1613, -354.466, -14.871, -345.085, -10.7419, -311.73, 14.0323, -307.56, 19.1936, -336.746, 22.2903, -306.518, 67.7097, -289.84, 107.968, -263.782, 130.677, -232.511, 150.29, -191.86, 153.387, -143.912, 141, -90.7524, 114.161, -61.5668, 70.8065, -30.2964, 26.4194, -15.7036, -17.9677, -11.5342, -72.6774, -29.2541, -115, -63.6515, -140.806, -100.134)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Polygon2D"]
+position = Vector2(-192.419, -410.752)
+scale = Vector2(0.8, 0.8)
+sprite_frames = SubResource("SpriteFrames_7xcrb")

@@ -198,26 +198,33 @@ func load_deck(ownerFigure : Figure, ownerPlayer : Player):
 		grid = grid_positionsP
 	else:
 		grid = grid_positionsO
-	
-	for i in range(0,5):
-		var newcard = deckobj.load_card_for_stack(i,5,grid[i])
+	var c = 1
+	for i in range(14,14-len(deckobj.deck_list),-1):
+		var newcard = deckobj.load_card_for_stack(i,c,grid[i])
 		newcard.connect("Card_is_clicked",cardselected)
+		print(i , c)
+		if i == 14 or i == 12 or i == 9 or i == 5:
+			c += 1 
 		
-	for i in range(5,9):
-		var newcard = deckobj.load_card_for_stack(i,4,grid[i])
-		newcard.connect("Card_is_clicked",cardselected)
-		
-	for i in range(9,12):
-		var newcard = deckobj.load_card_for_stack(i,3,grid[i])
-		newcard.connect("Card_is_clicked",cardselected)
-		
-	for i in range(12,14):
-		var newcard = deckobj.load_card_for_stack(i,2,grid[i])
-		newcard.connect("Card_is_clicked",cardselected)
-		
-	var newcard = deckobj.load_card_for_stack(14,1,grid[14])
-	newcard.connect("Card_is_clicked",cardselected)
-	
+#	for i in range(0,5):
+#		var newcard = deckobj.load_card_for_stack(i,5,grid[i])
+#		newcard.connect("Card_is_clicked",cardselected)
+#
+#	for i in range(5,9):
+#		var newcard = deckobj.load_card_for_stack(i,4,grid[i])
+#		newcard.connect("Card_is_clicked",cardselected)
+#
+#	for i in range(9,12):
+#		var newcard = deckobj.load_card_for_stack(i,3,grid[i])
+#		newcard.connect("Card_is_clicked",cardselected)
+#
+#	for i in range(12,14):
+#		var newcard = deckobj.load_card_for_stack(i,2,grid[i])
+#		newcard.connect("Card_is_clicked",cardselected)
+#
+#	var newcard = deckobj.load_card_for_stack(14,1,grid[14])
+#	newcard.connect("Card_is_clicked",cardselected)
+#
 func _ready():
 	#Standart deck generator
 	var stndrtdck = Decks.instantiate()

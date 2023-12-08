@@ -1,6 +1,6 @@
 class_name FigureData
 
-@export_enum("CYBORG","MUTANT","SOLDIER") var name : String
+@export_enum("CYBORG","MUTANT","SOLDIER","WALKINGTURRET") var name : String
 #name,scene,deckname,is_controllable
 const ALLFIGURES = {
 	"CYBORG" :
@@ -8,5 +8,7 @@ const ALLFIGURES = {
 	"MUTANT" :
 		["Mutant","res://Game/Figures/FigureScenes/Mutant.tscn","StandartDeck",true],
 	"SOLDIER" :
-		["Soldier","res://Game/Figures/FigureScenes/BasicFigure.tscn","StandartDeck",true]
+		["Soldier","res://Game/Figures/FigureScenes/BasicFigure.tscn","StandartDeck",true],
+	"WALKINGTURRENT":
+		["Walking Turret","res://Game/Figures/FigureScenes/Minion.tscn",]
 }

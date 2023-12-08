@@ -57,6 +57,18 @@ func get_diagonal_tiles_in_range(source : pentagon, card_range : int,ghost : boo
 		possible_tiles.append_array(next_possible_tiles)
 	return possible_tiles
 	
+var filterblocked = func filter_blocked(inpenta : pentagon) -> bool:
+	return not inpenta.blocked
+	
+	
+func find_path(target_tile : pentagon, start_tile : pentagon):
+	var length : int
+	var path = start_tile.get_tiles_in_range
+	path.pop_front()
+	path.filter(filterblocked)
+	
+	
+	
 func light_up_pentas(pentas : Array[pentagon],light_up_type : Color):
 	for penta in pentas:
 		penta.lightup_on(light_up_type)
@@ -70,6 +82,9 @@ func light_off_pentas():
 	if board_node.game_state == "Choose Target":
 		if board_node.selected_figure.decision:
 			board_node.selected_figure.decision.light_up_in_range()
+			
+			
+
 		
 
 

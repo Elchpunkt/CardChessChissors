@@ -81,6 +81,7 @@ func place_figure_on_tile(Mappos : pentagon):
 	Mappos.add_obj_to_this_tile("FIGURE", self)
 	self.map_position = Mappos
 	self.position = (Mappos.midpos * tile_map.mapscaling).rotated(tile_map.maprotation) + Mappos.global_position
+	self.z_index = self.position.y
 
 func remove_figure_from_tile(standing_tile : pentagon, fromgame : bool = false):
 	standing_tile.remove_obj_from_this_tile("FIGURE",self)

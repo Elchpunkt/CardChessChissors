@@ -83,7 +83,7 @@ func save_deck(playerornot : bool = true):
 		for savecard in deck_list:
 			to_save_deck.store_line(savecard)
 	
-func load_deck(newdeckname : String):
+func load_deck(newdeckname : String,number_of_cards : int = 15):
 	var loc
 	if FileAccess.file_exists("res://Game/Figures/Decks/Own/"+newdeckname+".txt"):
 		loc = "Own"
@@ -94,10 +94,17 @@ func load_deck(newdeckname : String):
 		deck_name = saved_deck.get_line()
 		deck_list = []
 		print(deck_name)
-		for c in range(0,15):
+		for c in range(0,number_of_cards):
+			deck_list.append(saved_deck.get_line())
+		print(deck_list)
+	elif FileAccess.file_exists("res://Game/Figures/Decks/"+loc+"/Minions/"+newdeckname+".txt"):
+		var saved_deck = FileAccess.open("res://Game/Figures/Decks/"+loc+"/Minions/"+newdeckname+".txt", FileAccess.READ)
+		deck_name = saved_deck.get_line()
+		deck_list = []
+		print(deck_name)
+		for c in range(0,number_of_cards):
 			deck_list.append(saved_deck.get_line())
 		print(deck_list)
 	else:
 		print("ERORR  can't find deck!")
 		return
-

@@ -88,5 +88,41 @@ const ALLCARDS = {
 			"CARD_RANGE" : 2,
 			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_LEAP.gd",
 			"CARD_PRIORITY" : 1
+		},
+	"WALK":
+		{
+			"CARDNAME": "WALK",
+			"CARDTEXTURE":"res://Game/Cards/CardImg/CardFront/2d38411678e3a6b8.jpeg",
+			"ALLOWED_ROWS" : 12345,
+			"ALLOWED_COLUMS" : 12345,
+			"CARD_COLOR" : "GREEN",
+			"CARD_SUPER_TYPE" : "MOVE",
+			"CARD_RANGE" : 1,
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_WALK.gd",
+			"CARD_PRIORITY" : 3
+		},
+	"SHOOT":
+		{
+			"CARDNAME": "SHOOT",
+			"CARDTEXTURE":"res://Game/Cards/CardImg/CardFront/2d38411678e3a6b8.jpeg",
+			"ALLOWED_ROWS" : 12345,
+			"ALLOWED_COLUMS" : 12345,
+			"CARD_COLOR" : "BLUE",
+			"CARD_SUPER_TYPE" : "ATTACK",
+			"CARD_RANGE" : 4,
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_SHOOT.gd",
+			"CARD_PRIORITY" : 2
+		},
+	"CHARGE":
+		{
+			"CARDNAME": "CHARGE",
+			"CARDTEXTURE":"res://Game/Cards/CardImg/CardFront/2d38411678e3a6b8.jpeg",
+			"ALLOWED_ROWS" : 12345,
+			"ALLOWED_COLUMS" : 12345,
+			"CARD_COLOR" : "BLUE",
+			"CARD_SUPER_TYPE" : "BUFF",
+			"CARD_RANGE" : 0,
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_CHARGE.gd",
+			"CARD_PRIORITY" : 3
 		}
 }
