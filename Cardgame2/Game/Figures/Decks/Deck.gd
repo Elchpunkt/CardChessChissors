@@ -11,6 +11,7 @@ var stack_with_2 :Array[Card]
 var stack_with_1 :Array[Card]
 var owner_figure : Figure
 var color_stats : Vector3
+var deck_draw_side : bool = true
 
 func set_deck_list(thisdeck : Array[String]):
 	deck_list = thisdeck
@@ -24,46 +25,45 @@ func set_deck_name(deckname : String):
 func get_deck_name() -> String:
 	return deck_name
 	
-func load_card_for_stack(i : int,stapel : int,grid_position : Vector2) -> Card:
+func load_card_for_stack(i : int,stapel : int) -> Card:
 	var gencard = Cards.instantiate()
 	gencard.load_card(self.deck_list[i],i)
-	gencard.position = grid_position
 	self.add_child(gencard)
-	var zwischenspeicher : Array[Card] = self.get("stack_with_"+str(stapel))
-	zwischenspeicher.append(gencard)
-	self.set("stack_with_"+str(stapel), zwischenspeicher)
+	self.get("stack_with_"+str(stapel)).append(gencard)
 	return gencard
 	
 func move_card(thiscard : Card):
-	var beforepos = thiscard.ingame_pos
-	var grid : Array[Vector2] = []
-	if self.get_parent().playerid == 1:
-		grid = get_tree().get_root().get_node("Board").grid_positionsP
-	else:
-		grid = get_tree().get_root().get_node("Board").grid_positionsO
-	match beforepos:
+	match thiscard.ingame_pos:
 		0:
-			self.push_card_in_stack(5,grid)
+			self.push_card_in_stack(5)
 		5:	
-			self.push_card_in_stack(4,grid)
+			self.push_card_in_stack(4)
 		9:
-			self.push_card_in_stack(3,grid)
+			self.push_card_in_stack(3)
 		12:
-			self.push_card_in_stack(2,grid)
+			self.push_card_in_stack(2)
 		14:
-			self.push_card_in_stack(1,grid)
+			self.push_card_in_stack(1)
 	update_color_stats()
 	owner_figure.update_figure_interface.emit(owner_figure)
+	
 
-func push_card_in_stack(stapel : int, grid : Array[Vector2]):
+func push_card_in_stack(stapel : int):
 	var thisstack = self.get("stack_with_"+str(stapel))
+	thisstack.push_front(thisstack.pop_back())
 	var summ : int = 15
 	for r in range(0,stapel+1):
 		summ = summ-r
+	print(summ)
 	for i in range(0,stapel):
-		var cf = (i+stapel-1)%stapel + summ
-		thisstack[i].update_card_position(cf,grid[cf])
-	thisstack.append(thisstack.pop_front())
+		var cf = i+summ
+		thisstack[i].update_card_position(cf)
+	update_deck_visuals()
+	
+func update_deck_visuals():
+	for i in range(1,6):
+		for card in self.get("stack_with_"+str(i)):
+			card.move_card_to_pos(deck_draw_side)
 	
 
 func update_color_stats():

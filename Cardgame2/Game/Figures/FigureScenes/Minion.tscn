@@ -14,9 +14,9 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D"]
+[node name="Minion" type="CollisionPolygon2D"]
 position = Vector2(0.5, 0.349999)
-scale = Vector2(0.96875, 0.959375)
+scale = Vector2(0.202, 0.2)
 polygon = PackedVector2Array(-142.968, -174.436, -140.903, -210.919, -95.4839, -268.248, -35.6129, -298.476, -12.9032, -307.857, 41.8065, -295.349, 104.774, -263.036, 145.032, -201.537, 155.355, -142.124, 137.806, -77.4984, 87.2258, -35.8046, -0.516129, -6.61889, -57.2903, -22.2541, -122.323, -76.456, -148.129, -130.658)
 script = ExtResource("1_wo5x8")
 

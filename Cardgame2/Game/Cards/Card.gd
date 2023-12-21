@@ -5,13 +5,14 @@ var selected : bool = false
 var cardname : String
 var sprite : Texture
 var ingame_pos : int
+var playable : bool = false
 var hoverscale : float = 1.0
 var card_stats_dict
 var light_up_color
-@onready var tile_map = get_tree().get_root().get_node("Board").mytilemap
+#@onready var tile_map = get_tree().get_root().get_node("Board").mytilemap
 var resolve_code
 var card_color : Vector3
-var priority
+var this_priority
 
 var CardDatabase = preload("res://Game/Cards/CardDatabase.gd")
 var CardData_Dict = CardDatabase.ALLCARDS
@@ -23,8 +24,9 @@ func _ready():
 	
 func load_card(thiscardname : String , startpos : int):
 	cardname = thiscardname
-	ingame_pos = startpos 
+	update_card_position(startpos) 
 	$Cardname.text = cardname + "  " + str(ingame_pos)
+	print(cardname)
 	card_stats_dict = CardData_Dict[thiscardname]
 	sprite = load(card_stats_dict["CARDTEXTURE"])
 	resolve_code = load(str(card_stats_dict["CARD_CODE"])).new()
@@ -55,15 +57,26 @@ func load_card_color():
 			card_color = Vector3(0,0,1)
 	$ColorRect/ColorIndicator.modulate = Color(card_color.x,card_color.y,card_color.z,1.0)
 
-func update_card_position(grid_position_index : int, grid_position :Vector2):
-		self.set_position(grid_position) 
+func update_card_position(grid_position_index : int):
 		self.ingame_pos = grid_position_index
+		match ingame_pos:
+			0,5,9,12,14:
+				playable = true
+			_:
+				playable = false
+			
+		
+func move_card_to_pos(P_side : bool):
+	if P_side:
+		self.set_position(Globals.this_board.grid_positionsP[ingame_pos])
+	else:
+		self.set_position(Globals.this_board.grid_positionsO[ingame_pos])
 		
 func resolve_card(acting_figure : Figure, target_penta : pentagon, priority : int):
 		await resolve_code.resolve_this_card(acting_figure,target_penta,priority)
 
 func get_tiles_in_range(acting_figure : Figure) -> Array[pentagon]:
-	return resolve_code.get_tiles_in_range_sub(acting_figure,tile_map)
+	return resolve_code.get_tiles_in_range_sub(acting_figure)
 	
 func check_movement_possible(target : pentagon, priority : int, blocking_figures : Array[Figure] = []) -> bool:
 	var is_possible : bool
@@ -98,11 +111,11 @@ func get_possible_targets():
 func light_up_in_range():
 	var lightupcolor : Color = light_up_color
 	var card_owner_figure = get_parent().owner_figure
-	tile_map.light_up_pentas(get_tiles_in_range(card_owner_figure),lightupcolor)
+	Globals.tile_map.light_up_pentas(get_tiles_in_range(card_owner_figure),lightupcolor)
 	
 func get_card_speed(figure : Figure) -> int:
-	priority = card_stats_dict["CARD_PRIORITY"] + figure.get_speed()
-	return priority
+	this_priority = card_stats_dict["CARD_PRIORITY"] + figure.get_speed()
+	return this_priority
 	
 func _process(delta):
 	if hover or selected:
@@ -128,5 +141,5 @@ func _on_button_mouse_entered():
 	
 func _on_button_mouse_exited():
 	hover = false
-	tile_map.light_off_pentas()
+	Globals.tile_map.light_off_pentas()
 

@@ -16,10 +16,11 @@ var life : int = 45
 var speed : int
 var resource : Dictionary = {"RED" = 0,"GREEN" = 0, "BLUE" = 0}
 var figure_scene
+var figure_scene_instance
 var figure_ghost
 
 
-@onready var tile_map = get_tree().get_root().get_node("Board").mytilemap
+#@onready var tile_map = get_tree().get_root().get_node("Board").mytilemap
 
 signal update_figure_interface(figure : Figure)
 signal figure_is_clicked(clicked_figure : Figure)
@@ -33,10 +34,12 @@ func load_figure_bytype(type : String):
 	var loaded_array = FigureDatas.ALLFIGURES[type]
 	display_name = loaded_array[0]
 	figure_scene = load(loaded_array[1])
-	var figure_scene_instance = figure_scene.instantiate()
+	figure_scene_instance = figure_scene.instantiate()
 	$Area2D.add_child(figure_scene_instance)
 	figure_deck_name = loaded_array[2]
 	is_controllable = loaded_array[3]
+	#if !is_controllable:
+		
 	
 func set_decision_target(target_tile):
 	decision_target = target_tile
@@ -45,11 +48,10 @@ func set_decision_target(target_tile):
 	
 func create_ghost(target_tile):
 	remove_ghost()
-	var figure_scene_instance = figure_scene.instantiate()
-	figure_scene_instance.modulate = Color(1,1,1,0.8)
-	get_parent().get_parent().add_child(figure_scene_instance)
-	figure_scene_instance.position = (target_tile.midpos * tile_map.mapscaling).rotated(tile_map.maprotation) + target_tile.global_position
-	figure_ghost = figure_scene_instance
+	figure_ghost = figure_scene.instantiate()
+	figure_ghost.modulate = Color(1,1,1,0.8)
+	get_parent().get_parent().add_child(figure_ghost)
+	figure_ghost.position = (target_tile.midpos * Globals.tile_map.mapscaling).rotated(Globals.tile_map.maprotation) + target_tile.global_position
 	
 func remove_ghost():
 	if figure_ghost:
@@ -80,13 +82,15 @@ func update_figure_position():
 func place_figure_on_tile(Mappos : pentagon):
 	Mappos.add_obj_to_this_tile("FIGURE", self)
 	self.map_position = Mappos
-	self.position = (Mappos.midpos * tile_map.mapscaling).rotated(tile_map.maprotation) + Mappos.global_position
+	self.position = (Mappos.midpos * Globals.tile_map.mapscaling).rotated(Globals.tile_map.maprotation) + Mappos.global_position
 	self.z_index = self.position.y
 
 func remove_figure_from_tile(standing_tile : pentagon, fromgame : bool = false):
 	standing_tile.remove_obj_from_this_tile("FIGURE",self)
 	if fromgame:
+		Globals.this_board.figurelist.pop_at(Globals.this_board.figurelist.find(self))
 		self.queue_free()
+
 		
 func take_damage(damage : int):
 	life -= damage
@@ -115,6 +119,9 @@ func get_buffs() -> Array:
 			current_buffs.append(subitem)
 	return current_buffs
 		
+		
+func generate_choice():
+	figure_scene_instance.generate_choice()
 	
 func _ready():
 	pass

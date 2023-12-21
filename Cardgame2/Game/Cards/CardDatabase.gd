@@ -89,6 +89,18 @@ const ALLCARDS = {
 			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_LEAP.gd",
 			"CARD_PRIORITY" : 1
 		},
+	"WALKINGTURRET":
+		{
+			"CARDNAME": "WALKINGTURRET",
+			"CARDTEXTURE":"res://Game/Cards/CardImg/CardFront/7b903b03500c3086.jpeg",
+			"ALLOWED_ROWS" : 12345,
+			"ALLOWED_COLUMS" : 12345,
+			"CARD_COLOR" : "BLUE",
+			"CARD_SUPER_TYPE" : "SUMMON",
+			"CARD_RANGE" : 1,
+			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_WALKINGTURRET.gd",
+			"CARD_PRIORITY" : 3
+		},
 	"WALK":
 		{
 			"CARDNAME": "WALK",
@@ -109,7 +121,7 @@ const ALLCARDS = {
 			"ALLOWED_COLUMS" : 12345,
 			"CARD_COLOR" : "BLUE",
 			"CARD_SUPER_TYPE" : "ATTACK",
-			"CARD_RANGE" : 4,
+			"CARD_RANGE" : 3,
 			"CARD_CODE" : "res://Game/Cards/Card-extensions/Card_SHOOT.gd",
 			"CARD_PRIORITY" : 2
 		},

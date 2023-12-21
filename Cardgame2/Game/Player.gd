@@ -2,6 +2,7 @@ class_name Player extends Control
 
 var is_player : bool
 var playerid : int
+var player_name : String
 	
 func set_is_player(c : bool):
 	is_player = c

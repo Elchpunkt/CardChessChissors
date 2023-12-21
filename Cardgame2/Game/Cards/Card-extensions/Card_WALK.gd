@@ -8,8 +8,8 @@ func resolve_this_card(acting_figure : Figure, choice : pentagon, priority : int
 			acting_figure.move_figure(acting_figure.map_position,choice)
 		acting_figure.remove_ghost()
 		
-func get_tiles_in_range_sub(acting_figure : Figure, tile_map, ghost : bool = true) -> Array[pentagon]:
+func get_tiles_in_range_sub(acting_figure : Figure, ghost : bool = true) -> Array[pentagon]:
 	var movement_range : int = card_stats_dict_sub["CARD_RANGE"]
-	var movement_tiles = tile_map.get_tiles_in_range(acting_figure.map_position,movement_range,ghost)
+	var movement_tiles = Globals.tile_map.get_tiles_in_range(acting_figure.map_position,movement_range,ghost)
 	movement_tiles.pop_front()
 	return movement_tiles

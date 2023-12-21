@@ -11,6 +11,7 @@ var top_corner : Vector2 = Vector2(600,120)
 var mapscaling : Vector2  = Vector2(0.68,0.5)
 var maprotation : float = deg_to_rad(20)
 var lit_pentagons : Array[pentagon]
+@onready var board_node = get_tree().get_root().get_node("Board")
 
 
 func get_tiles_in_range(source: pentagon, card_range : int, ghost : bool = true) -> Array[pentagon]:
@@ -57,17 +58,38 @@ func get_diagonal_tiles_in_range(source : pentagon, card_range : int,ghost : boo
 		possible_tiles.append_array(next_possible_tiles)
 	return possible_tiles
 	
-var filterblocked = func filter_blocked(inpenta : pentagon) -> bool:
-	return not inpenta.blocked
-	
-	
-func find_path(target_tile : pentagon, start_tile : pentagon):
-	var length : int
-	var path = start_tile.get_tiles_in_range
-	path.pop_front()
-	path.filter(filterblocked)
-	
-	
+
+func find_path(start_tile : pentagon, target_tile : pentagon) -> Array[pentagon]:
+	var searched_tiles : Array[pentagon] = [start_tile]
+	var to_search_tiles : Array[pentagon] = start_tile.get_neighbours()
+	var saved_paths : Array = [[start_tile]]
+	var iteration_counter : int = 0
+	var pathid : int = 0
+	while iteration_counter <= 200:
+		var next_tiles : Array[pentagon] = []
+		for searching_tile in to_search_tiles:
+			var neighbour_tiles : Array[pentagon] = searching_tile.get_neighbours()
+			for i in range(0,5):
+				if !searched_tiles.has(neighbour_tiles[i]):
+					var new_path : Array[pentagon] = saved_paths[searched_tiles.find(searching_tile)]
+					new_path.append(neighbour_tiles[i])
+					pathid += 1
+					saved_paths.append(new_path)
+					searched_tiles.append(neighbour_tiles[i])
+					if !neighbour_tiles[i].blocked:
+						next_tiles.append(neighbour_tiles[i])
+					if neighbour_tiles[i] == target_tile:
+						return saved_paths[pathid]
+		to_search_tiles = next_tiles
+		iteration_counter += 1
+	return saved_paths[0]
+		
+func find_range(start_tile : pentagon,target_tile : pentagon,) -> int:
+	for i in range(0,10):
+		if get_tiles_in_range(start_tile,i).has(target_tile):
+			return i
+	print("ERROR not in RANGE 10")
+	return 30
 	
 func light_up_pentas(pentas : Array[pentagon],light_up_type : Color):
 	for penta in pentas:
@@ -78,7 +100,7 @@ func light_off_pentas():
 	for penta in lit_pentagons:
 		penta.lightup_off()
 	lit_pentagons.clear()
-	var board_node = get_parent().get_parent()
+	#var board_node = get_parent().get_parent()
 	if board_node.game_state == "Choose Target":
 		if board_node.selected_figure.decision:
 			board_node.selected_figure.decision.light_up_in_range()

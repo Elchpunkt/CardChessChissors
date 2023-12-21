@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://bk4rgw8lmjprp"]
+
+[ext_resource type="Texture2D" uid="uid://c82mlf7dewype" path="res://Game/Figures/FiguresImg/163783ebad19eef7.jpeg" id="1_d12cn"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7xcrb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_d12cn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Soldier" type="CollisionPolygon2D"]
+position = Vector2(0.5, 0.349999)
+scale = Vector2(0.96875, 0.959375)
+polygon = PackedVector2Array(-11.871, -6.61889, -12.9032, -29.5505, -11.871, -59.7785, -21.1613, -70.202, -6.70968, -105.642, 2.58065, -106.684, 29.4194, -85.8371, 18.0645, -64.9902, 16, -1.40717, -12.9032, -0.36482)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+clip_children = 1
+position = Vector2(3, 7)
+polygon = PackedVector2Array(-16.9355, -8.40717, -14.871, -11.5342, -15.9032, -20.9153, -16.9355, -24.0423, -14.871, -33.4235, -15.9032, -42.8046, -14.871, -64.6938, -13.8387, -66.7785, -16.9355, -67.8208, -23.129, -77.202, -19, -86.5831, -13.8387, -94.9218, -9.70968, -112.642, -0.419355, -114.726, 3.70968, -110.557, 25.3871, -94.9218, 26.4194, -89.7101, 16.0968, -75.1173, 14.0323, -48.0163, 15.0645, -30.2964, 13, -7.36482)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Polygon2D"]
+position = Vector2(14.0323, -67.8208)
+scale = Vector2(0.1, 0.095)
+sprite_frames = SubResource("SpriteFrames_7xcrb")

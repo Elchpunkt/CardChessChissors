@@ -11,7 +11,7 @@ var creator : Figure
 signal doodad_is_clicked(doodad : Doodad)
 
 var DoodadDatas = preload("res://Game/Figures/Doodads/DoodadDatabase.gd")
-@onready var tile_map = get_tree().get_root().get_node("Board").mytilemap
+#@onready var tile_map = get_tree().get_root().get_node("Board").mytilemap
 
 func load_doodad_by_type(type : String, creater : Figure = null):
 	doodad_type = type
@@ -27,7 +27,7 @@ func place_doodad_on_tile(Mappos : pentagon):
 	Mappos.add_obj_to_this_tile("Doodad", self)
 	Mappos.blocked = true
 	self.map_position = Mappos
-	self.position = (Mappos.midpos * tile_map.mapscaling).rotated(tile_map.maprotation) + Mappos.global_position
+	self.position = (Mappos.midpos * Globals.tile_map.mapscaling).rotated(Globals.tile_map.maprotation) + Mappos.global_position
 	self.z_index = self.position.y
 
 func remove_doodad_from_tile(standing_tile : pentagon, fromgame : bool = false):

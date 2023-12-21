@@ -4,7 +4,7 @@ const Cards =  preload("res://Game/Cards/Card.tscn")
 const Figures = preload("res://Game/Figures/Figure.tscn")
 const Players = preload("res://Game/Player.tscn")
 const Decks = preload("res://Game/Figures/Decks/Deck.tscn")
-@onready var mytilemap = get_node("CanvasLayer0/Map")
+#@onready var mytilemap = get_node("CanvasLayer0/Map")
 var rng = RandomNumberGenerator.new()
 
 var grid_itemsP : Array[Card]
@@ -20,6 +20,7 @@ var oneshot = 1
 var selected_figure
 var selected_card
 var game_state = "Place Figure"
+var active_player : Player
 
 var penta_is_clicked_func = func penta_is_clicked(clicked_penta : Area2D):
 	
@@ -28,29 +29,20 @@ var penta_is_clicked_func = func penta_is_clicked(clicked_penta : Area2D):
 			if oneshot == 1:
 				var newfigure : Figure = gen_figure("MUTANT",playerlist[0])
 				newfigure.place_figure_on_tile(clicked_penta)
-				self.listen_to_figure(newfigure)
 				oneshot = 2
 			elif oneshot == 2:
 				var newfigure : Figure = gen_figure("SOLDIER",playerlist[1])
 				newfigure.place_figure_on_tile(clicked_penta)
-				self.listen_to_figure(newfigure)
 				oneshot = 3
 				game_state = "Choose Figure"
+				active_player = playerlist[0]
+				$CanvasLayer1/GameControls/Active_player.text = active_player.player_name
 		"Choose Figure":
 			if clicked_penta.objs_on_this_tile.has("FIGURE"):
-				#if selected_figure.figure_owner.is_player:
-				#selected_figure = null
-				selected_figure = clicked_penta.objs_on_this_tile.FIGURE
-				selected_figure.lightup()
-				game_state = "Choose Aktion"
+				figureisclicked.call(clicked_penta.objs_on_this_tile.FIGURE)
 		"Choose Aktion":
 			if clicked_penta.objs_on_this_tile.has("FIGURE"):
-				#if selected_figure.figure_owner.is_player:
-				selected_figure.lightoff()
-				selected_figure = null
-				selected_figure = clicked_penta.objs_on_this_tile.FIGURE
-				selected_figure.lightup()
-				game_state = "Choose Aktion"
+				figureisclicked.call(clicked_penta.objs_on_this_tile.FIGURE)
 
 		"Choose Target":
 			var possible_tiles = selected_figure.decision.get_tiles_in_range(selected_figure)
@@ -66,10 +58,14 @@ var penta_is_clicked_func = func penta_is_clicked(clicked_penta : Area2D):
 			
 var figureisclicked = func figure_is_clicked(figure : Figure):
 	match game_state:
-		"Choose Figure":
-				selected_figure = figure
-				selected_figure.lightup()
-				game_state = "Choose Aktion"
+		"Choose Figure","Choose Aktion":
+				show_deck(figure)
+				if figure.figure_owner == active_player:
+					if selected_figure:
+						selected_figure.lightoff()
+					selected_figure = figure
+					selected_figure.lightup()
+					game_state = "Choose Aktion"
 				
 var doodadisclicked = func doodad_is_clicked(doodad : Doodad):
 	doodad.modulate = Color(0.5,0.5,0.5,1)
@@ -86,7 +82,7 @@ var cardselected = func card_is_selected(thiscard : Card, thisdeck : Deck):
 				selected_figure.decision = thiscard
 				thiscard.selected = true
 				selected_card = thiscard
-				mytilemap.light_off_pentas()
+				Globals.tile_map.light_off_pentas()
 				thiscard.light_up_in_range()
 				game_state = "Choose Target"
 				
@@ -97,7 +93,7 @@ var undocardselect = func undo_card_selected():
 		if selected_card:
 			selected_card.selected = false
 			selected_card = null
-		mytilemap.light_off_pentas()
+		Globals.tile_map.light_off_pentas()
 	elif game_state == "Choose Aktion":
 		game_state = "Choose Figure"
 		selected_figure.lightoff()
@@ -126,41 +122,49 @@ func resolve_turn():
 		for i in range(1,12):
 			await resolve_priority(i)
 		for figure in figurelist:
-			figure.figure_deck.move_card(figure.decision)
-			figure.decision.selected = false
-			figure.decision = null
+			if figure.decision:
+				figure.figure_deck.move_card(figure.decision)
+			if figure.is_controllable:
+				figure.decision.selected = false
+				figure.decision = null
+			else:
+				figure.generate_choice()
+				print(figure,figure.decision)
+		
+		set_active_player(playerlist[0])
 		get_tree().call_group("BUFFS","turn_passed")
+	var player_done : int = 0
+	for figure in figurelist:
+		if figure.figure_owner == active_player:
+			player_done += 1
+			if figure.decision:
+				player_done -= 1
+	if player_done == 0:
+		set_active_player(playerlist[(1+playerlist.find(active_player))%len(playerlist)])
 	selected_figure.lightoff()
 	selected_figure = null
 	selected_card.selected = false
 	selected_card = null
 	game_state= "Choose Figure"
-	mytilemap.light_off_pentas()
+	Globals.tile_map.light_off_pentas()
 		
 func resolve_priority(priority : int):
 	for figure in figurelist:
-		await figure.decision.resolve_card(figure,figure.decision_target,priority)
+		if figure.decision:
+			await figure.decision.resolve_card(figure,figure.decision_target,priority)
 		
 	for figure in figurelist:
 		figure.update_figure_position()
 		
-var updatefigureinterface = func update_figure_interface(figure : Figure):
-	if figure.figure_owner.playerid == 1:
-		$CanvasLayer1/GameControls/Figure_Stats_Loc/PFigureHealth.set_text("Pfigure Life = " + str(figure.life))
-		$CanvasLayer1/GameControls/Figure_Stats_Loc/PColorStats.set_text("RED = " + str(figure.figure_deck.color_stats.x)
-		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.z))
-		$CanvasLayer1/GameControls/Figure_Stats_Loc/PResources.set_text(str(figure.resource))
-	else:
-		$CanvasLayer1/GameControls/Figure_Stats_Loc/OFigureHealth.set_text("Ofigure Life = " + str(figure.life))
-		$CanvasLayer1/GameControls/Figure_Stats_Loc/OColorStats.set_text("RED = " + str(figure.figure_deck.color_stats.x)
-		+ "  GREEN = " + str(figure.figure_deck.color_stats.y) + "  BLUE = " + str(figure.figure_deck.color_stats.z))
-		$CanvasLayer1/GameControls/Figure_Stats_Loc/OResources.set_text(str(figure.resource))	
+
 		
 func gen_figure(figure_type : String, figureowner : Player) -> Figure:
 	var newfigure = Figures.instantiate()
 	newfigure.set_figure_owner(figureowner)
 	newfigure.load_figure_bytype(figure_type)
-	mytilemap.add_child(newfigure)
+	Globals.tile_map.add_child(newfigure)
+	$CanvasLayer1/GameControls.listen_to_figure(newfigure)
+	newfigure.connect("figure_is_clicked",figureisclicked)
 	figurelist.append(newfigure)
 	load_deck(newfigure,figureowner)
 	return newfigure
@@ -178,34 +182,28 @@ func listen_to_map(thismap):
 	for cpenta in pentalist:
 		cpenta.connect("penta_being_clicked",penta_is_clicked_func)
 		
-func listen_to_figure(figure : Figure):
-	figure.connect("figure_is_clicked",figureisclicked)
-	if figure.is_controllable:
-		figure.connect("update_figure_interface",updatefigureinterface)
-	
-		
 func listen_to_doodad(doodad : Doodad):
 	doodad.connect("doodad_is_clicked",doodadisclicked)
 	
 func load_deck(ownerFigure : Figure, ownerPlayer : Player):
 	var deckobj = Decks.instantiate()
-	deckobj.load_deck(ownerFigure.figure_deck_name)
+	var number_of_cards : int = 15
+	if !ownerFigure.is_controllable:
+		number_of_cards = 3
+	deckobj.load_deck(ownerFigure.figure_deck_name, number_of_cards)
 	deckobj.owner_figure = ownerFigure
 	ownerPlayer.add_child(deckobj)
 	ownerFigure.figure_deck = deckobj
-	var grid
-	if ownerPlayer.playerid == 1:
-		grid = grid_positionsP
-	else:
-		grid = grid_positionsO
-	var c = 1
-	for i in range(14,14-len(deckobj.deck_list),-1):
-		var newcard = deckobj.load_card_for_stack(i,c,grid[i])
+	var c = 5
+	if !ownerFigure.is_controllable:
+		c = 2
+	for i in range(0,len(deckobj.deck_list)):
+		var newcard = deckobj.load_card_for_stack(i,c)
 		newcard.connect("Card_is_clicked",cardselected)
-		print(i , c)
-		if i == 14 or i == 12 or i == 9 or i == 5:
-			c += 1 
-		
+		if i == 4 or i == 8 or i == 11 or i == 13:
+			c -= 1 
+	hide_deck(ownerPlayer)
+	
 #	for i in range(0,5):
 #		var newcard = deckobj.load_card_for_stack(i,5,grid[i])
 #		newcard.connect("Card_is_clicked",cardselected)
@@ -225,6 +223,29 @@ func load_deck(ownerFigure : Figure, ownerPlayer : Player):
 #	var newcard = deckobj.load_card_for_stack(14,1,grid[14])
 #	newcard.connect("Card_is_clicked",cardselected)
 #
+func show_deck(figure : Figure):
+	if figure.figure_owner == active_player:
+		hide_deck(figure.figure_owner)
+		figure.figure_deck.deck_draw_side = true
+	else:
+		for player in playerlist:
+			if player != active_player:
+				hide_deck(player)
+		figure.figure_deck.deck_draw_side = false
+	figure.figure_deck.update_deck_visuals()
+	figure.figure_deck.visible = true
+		
+func hide_deck(player : Player):
+	for deck in player.get_children():
+		deck.visible = false
+
+
+func set_active_player(player : Player):
+	hide_deck(active_player)
+	active_player = player
+	hide_deck(player)
+	$CanvasLayer1/GameControls/Active_player.text = active_player.player_name
+
 func _ready():
 	#Standart deck generator
 	var stndrtdck = Decks.instantiate()
@@ -237,15 +258,17 @@ func _ready():
 	var player1 = Players.instantiate()
 	player1.set_playerid(1)
 	player1.set_is_player(true)
+	player1.player_name = "Player One"
 	var player2 = Players.instantiate()
 	player2.set_playerid(2)
 	player2.set_is_player(true)
+	player2.player_name = "Player Two"
 	$CanvasLayer1/GameControls.add_child(player1)
 	$CanvasLayer1/GameControls.add_child(player2)
 	playerlist.append(player1)
 	playerlist.append(player2)
-	mytilemap.get_pentagonList()
-	listen_to_map(mytilemap)
+	Globals.tile_map.get_pentagonList()
+	listen_to_map(Globals.tile_map)
 	gen_grid()
 
 # All Keyboard inputs HERE

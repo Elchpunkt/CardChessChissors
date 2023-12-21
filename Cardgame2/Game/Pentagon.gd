@@ -72,7 +72,7 @@ func createPenta(inpolygon : PackedVector2Array, inposition : Vector2, typein : 
 	thispolygon.modulate = polycolor
 	thispolygon.set_z_as_relative(false)
 	thispolygon.set_z_index(-10)
-	calcmiddle(inposition)
+	calcmiddle()
 	self.add_child(thispolygon)
 	var shape = CollisionPolygon2D.new()
 	shape.set_polygon(thispolygon.get_polygon())
@@ -92,7 +92,7 @@ func createPenta(inpolygon : PackedVector2Array, inposition : Vector2, typein : 
 		#label end
 	
 
-func calcmiddle(offsetvec :Vector2):
+func calcmiddle():
 	var addvec = Vector2(0,0)
 	for vec in thispolygon.polygon:
 		addvec = addvec + vec

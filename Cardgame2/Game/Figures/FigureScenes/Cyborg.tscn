@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dumwka7m8swcr"]
+
+[ext_resource type="Texture2D" uid="uid://bmnr0ryd2py3a" path="res://Game/Figures/FiguresImg/artbreeder-collage-2023-11-28T14_26_46.710Z.png" id="1_l0u8b"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7xcrb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_l0u8b")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Cyborg" type="CollisionPolygon2D"]
+polygon = PackedVector2Array(-9, -2, -7, -6, -8, -22, -12, -28, -12, -49, -10, -60, -4, -64, 4, -64, 10, -59, 4, -51, 8, -34, 13, -12, 20, 0, 21, 6, 0, 3)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+clip_children = 1
+position = Vector2(3, 7)
+polygon = PackedVector2Array(-11, -9, -11, -8, -10, -12, -11, -19, -12, -26, -11, -29, -15, -34, -16, -51, -14, -60, -12, -61, -12, -64, -14, -66, -13, -68, -7, -72, 1, -71, 6, -68, 5, -67, 6, -66, 2, -64, 1, -58, 3, -56, 5, -41, 6, -36, 8, -33, 7, -30, 9, -27, 8, -24, 9, -18, 10, -14, 13, -12, 16, -10, 17, -8, 12, -8, 16, -4, 23, -3, 21, -1, 16, -1, 16, 0, 10, 0, 9, -3, 0, -2, -5, -5, -8, -7, -12, -8)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Polygon2D"]
+position = Vector2(-5, -33)
+scale = Vector2(0.05, 0.05)
+sprite_frames = SubResource("SpriteFrames_7xcrb")

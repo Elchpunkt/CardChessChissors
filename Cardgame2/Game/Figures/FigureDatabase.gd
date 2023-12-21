@@ -4,11 +4,11 @@ class_name FigureData
 #name,scene,deckname,is_controllable
 const ALLFIGURES = {
 	"CYBORG" :
-		["Cyborg","res://Game/Figures/FigureScenes/BasicFigure.tscn","StandartDeck",true],
+		["Cyborg","res://Game/Figures/FigureScenes/Cyborg.tscn","StandartDeck",true],
 	"MUTANT" :
 		["Mutant","res://Game/Figures/FigureScenes/Mutant.tscn","StandartDeck",true],
 	"SOLDIER" :
-		["Soldier","res://Game/Figures/FigureScenes/BasicFigure.tscn","StandartDeck",true],
-	"WALKINGTURRENT":
-		["Walking Turret","res://Game/Figures/FigureScenes/Minion.tscn",]
+		["Soldier","res://Game/Figures/FigureScenes/Soldier.tscn","StandartDeck",true],
+	"WALKINGTURRET":
+		["Walking Turret","res://Game/Figures/FigureScenes/Minion.tscn","Miniondeck",false]
 }
