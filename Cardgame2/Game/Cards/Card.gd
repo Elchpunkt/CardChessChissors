@@ -94,7 +94,7 @@ func check_movement_possible(target : pentagon, priority : int, blocking_figures
 		if target.objs_on_this_tile.has("FIGURE"):
 			var figure = target.objs_on_this_tile["FIGURE"] 
 			if figure.decision.card_stats_dict["CARD_SUPER_TYPE"] == "MOVE":
-				if figure.decision.priority == priority:
+				if figure.decision.get_card_speed(figure) == priority:
 					if figure.decision_target != target:
 						if blocking_figures.has(get_parent().owner_figure):
 								is_possible = true
