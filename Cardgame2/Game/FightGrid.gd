@@ -60,29 +60,38 @@ func get_diagonal_tiles_in_range(source : pentagon, card_range : int,ghost : boo
 	
 
 func find_path(start_tile : pentagon, target_tile : pentagon) -> Array[pentagon]:
-	var searched_tiles : Array[pentagon] = [start_tile]
-	var to_search_tiles : Array[pentagon] = start_tile.get_neighbours()
-	var saved_paths : Array = [[start_tile]]
+	var searched_tiles : Array[pentagon] = []
+	var to_search_tiles : Array[pentagon] = [start_tile]
+	var saved_paths : Dictionary = {start_tile: to_search_tiles}
+	var out_path : Array[pentagon] = []
 	var iteration_counter : int = 0
-	var pathid : int = 0
 	while iteration_counter <= 200:
 		var next_tiles : Array[pentagon] = []
 		for searching_tile in to_search_tiles:
 			var neighbour_tiles : Array[pentagon] = searching_tile.get_neighbours()
 			for i in range(0,5):
 				if !searched_tiles.has(neighbour_tiles[i]):
-					var new_path : Array[pentagon] = saved_paths[searched_tiles.find(searching_tile)]
+					var new_path : Array[pentagon] = saved_paths[searching_tile]
+					print(new_path,"newPAth")
 					new_path.append(neighbour_tiles[i])
-					pathid += 1
-					saved_paths.append(new_path)
+					saved_paths[neighbour_tiles[i]] = new_path
+					print(saved_paths)
 					searched_tiles.append(neighbour_tiles[i])
 					if !neighbour_tiles[i].blocked:
 						next_tiles.append(neighbour_tiles[i])
 					if neighbour_tiles[i] == target_tile:
-						return saved_paths[pathid]
+						print(convert_array_to_arraypent(saved_paths[target_tile]),"thispath")
+						return saved_paths[target_tile]
 		to_search_tiles = next_tiles
 		iteration_counter += 1
-	return saved_paths[0]
+	return saved_paths[start_tile]
+	
+func convert_array_to_arraypent(array : Array)-> Array[pentagon]:
+	var outarray : Array[pentagon] = []
+	for pent in array:
+		outarray.append(pent)
+	return outarray
+		
 		
 func find_range(start_tile : pentagon,target_tile : pentagon,) -> int:
 	for i in range(0,10):

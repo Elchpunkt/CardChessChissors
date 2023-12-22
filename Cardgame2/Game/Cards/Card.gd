@@ -60,7 +60,7 @@ func load_card_color():
 func update_card_position(grid_position_index : int):
 		self.ingame_pos = grid_position_index
 		match ingame_pos:
-			0,5,9,12,14:
+			0,2,5,9,14:
 				playable = true
 			_:
 				playable = false
@@ -124,7 +124,7 @@ func _process(delta):
 		self.scale = Vector2(hoverscale,hoverscale)
 	else:
 		hoverscale = 1.0
-		self.z_index = 42 - ingame_pos*3 
+		self.z_index = ingame_pos*3 
 		self.scale = Vector2(hoverscale,hoverscale)
 		
 		
@@ -132,7 +132,7 @@ func _on_button_pressed():
 	Card_is_clicked.emit(self,get_parent())
 	print("Card is clicked ", cardname, get_parent())
 	hoverscale = 1.0
-	self.z_index = 42 - ingame_pos*3 
+	self.z_index = ingame_pos*3 
 	self.scale = Vector2(hoverscale,hoverscale)
 
 func _on_button_mouse_entered():

@@ -3,7 +3,7 @@ extends CollisionPolygon2D
 @onready var this_figure : Figure = get_parent().get_parent()
 
 func generate_choice():
-	var possible_attack_targets : Array[pentagon] = []
+	var possible_attack_targets : Array[Figure] = []
 	var possible_attack_tiles : Array[pentagon] = this_figure.figure_deck.stack_with_1[0].get_tiles_in_range(this_figure)
 	var distances : Array[int] = []
 	for figure in Globals.this_board.figurelist:
@@ -29,6 +29,7 @@ func generate_choice():
 			for i in range(0,len(distances)):
 				if distances[i] < distances[min]:
 					min = i
+			print(distances,possible_attack_targets)
 			this_figure.decision_target = Globals.tile_map.find_path(this_figure.map_position,possible_attack_targets[min].map_position)[1]
 		else:
 			this_figure.decision_target = this_figure.map_position

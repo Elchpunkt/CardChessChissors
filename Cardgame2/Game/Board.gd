@@ -76,7 +76,7 @@ var cardselected = func card_is_selected(thiscard : Card, thisdeck : Deck):
 	if game_state == "Choose Aktion" or game_state == 	"Choose Target":
 		print(game_state)
 		if selected_figure == thisdeck.owner_figure:
-			if thiscard.ingame_pos in [0,5,9,12,14]:
+			if thiscard.ingame_pos in [0,2,5,9,14]:
 				if selected_figure.decision:
 					selected_figure.decision.selected = false
 				selected_figure.decision = thiscard
@@ -129,7 +129,7 @@ func resolve_turn():
 				figure.decision = null
 			else:
 				figure.generate_choice()
-				print(figure,figure.decision)
+				print(figure.figure_type,figure.decision.cardname)
 		
 		set_active_player(playerlist[0])
 		get_tree().call_group("BUFFS","turn_passed")
@@ -175,7 +175,9 @@ func gen_grid():
 			grid_positionsP.append(Vector2(100 + x * gridx, 300 + gridy * 5 - y * gridy))
 	for x in range(0,5):
 		for y in range(0,5-x):
-			grid_positionsO.append(Vector2(1720 - x * gridx, 300 + gridy * 5 - y * gridy))	
+			grid_positionsO.append(Vector2(1720 - x * gridx, 300 + gridy * 5 - y * gridy))
+	grid_positionsO.reverse()
+	grid_positionsP.reverse()
 	
 func listen_to_map(thismap):
 	var pentalist = thismap.get_pentagonList()
@@ -194,14 +196,12 @@ func load_deck(ownerFigure : Figure, ownerPlayer : Player):
 	deckobj.owner_figure = ownerFigure
 	ownerPlayer.add_child(deckobj)
 	ownerFigure.figure_deck = deckobj
-	var c = 5
-	if !ownerFigure.is_controllable:
-		c = 2
+	var c = 1
 	for i in range(0,len(deckobj.deck_list)):
 		var newcard = deckobj.load_card_for_stack(i,c)
 		newcard.connect("Card_is_clicked",cardselected)
-		if i == 4 or i == 8 or i == 11 or i == 13:
-			c -= 1 
+		if i == 0 or i == 2 or i == 5 or i == 9:
+			c += 1 
 	hide_deck(ownerPlayer)
 	
 #	for i in range(0,5):

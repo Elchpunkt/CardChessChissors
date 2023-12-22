@@ -34,15 +34,15 @@ func load_card_for_stack(i : int,stapel : int) -> Card:
 	
 func move_card(thiscard : Card):
 	match thiscard.ingame_pos:
-		0:
-			self.push_card_in_stack(5)
-		5:	
-			self.push_card_in_stack(4)
-		9:
-			self.push_card_in_stack(3)
-		12:
-			self.push_card_in_stack(2)
 		14:
+			self.push_card_in_stack(5)
+		9:	
+			self.push_card_in_stack(4)
+		5:
+			self.push_card_in_stack(3)
+		2:
+			self.push_card_in_stack(2)
+		0:
 			self.push_card_in_stack(1)
 	update_color_stats()
 	owner_figure.update_figure_interface.emit(owner_figure)
@@ -51,12 +51,11 @@ func move_card(thiscard : Card):
 func push_card_in_stack(stapel : int):
 	var thisstack = self.get("stack_with_"+str(stapel))
 	thisstack.push_front(thisstack.pop_back())
-	var summ : int = 15
+	var summ : int = -1
 	for r in range(0,stapel+1):
-		summ = summ-r
-	print(summ)
+		summ = summ+r
 	for i in range(0,stapel):
-		var cf = i+summ
+		var cf = summ - i
 		thisstack[i].update_card_position(cf)
 	update_deck_visuals()
 	
@@ -68,8 +67,9 @@ func update_deck_visuals():
 
 func update_color_stats():
 	color_stats = Vector3(0,0,0)
-	for i in range(1,6):
-		color_stats += self.get("stack_with_"+str(i))[0].card_color
+	if owner_figure.is_controllable:
+		for i in range(1,6):
+			color_stats += self.get("stack_with_"+str(i))[0].card_color
 
 func save_deck(playerornot : bool = true):
 	var loc
